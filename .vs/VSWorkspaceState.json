@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\bin",
+    "\\src"
   ],
-  "SelectedNode": "\\D:\\code\\HEU Class\\Data structure and algorithm visualization AIDS",
+  "SelectedNode": "\\src\\main.cpp",
   "PreviewInSolutionExplorer": false
 }
