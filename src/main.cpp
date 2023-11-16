@@ -1,18 +1,20 @@
 #include <graphics.h>
+#include <stdlib.h>
+#include <time.h>
+#include "link.h"
 using namespace std;
 
 int main()
 {
     //初始化为640*480大小
-    initgraph(1280, 720, INIT_RENDERMANUAL);
-    ege_enable_aa(true);
+    initgraph(1280, 720, INIT_RENDERMANUAL); // 画幅 1280 * 720，关闭自动刷新
+    setbkmode(TRANSPARENT); //文本透明背景
+    setbkcolor(EGERGB(0xff, 0xff, 0xff)); //设置背景为白色
+    srand(time(0)); //初始化随机数种子
+    ege_enable_aa(true); // 开启抗锯齿
 
+    link_main();
 
-    setbkcolor(EGERGB(0xff, 0xff, 0xff));
-
-    setfillcolor(EGEARGB(128, 0x66, 0xcc, 0xff));
-
-    bar(100, 100, 140, 140);
     //等待用户按键
     getch();
 
