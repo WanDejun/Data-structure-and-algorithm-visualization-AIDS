@@ -7,6 +7,7 @@ typedef struct ARROW {
 
 extern arrow arrow_set[32];
 
+void arrow_init();
 void arrow_cpy(int u, int v);
 void draw_arrow(int loc, bool flag = true);
 void arrow_appear(int loc, int x_st, int y_st, int x_ed, int y_ed);

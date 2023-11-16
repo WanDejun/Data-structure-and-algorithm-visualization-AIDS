@@ -5,6 +5,12 @@
 
 arrow arrow_set[32];
 
+void arrow_init() {
+	for (int i = 0; i < 32; i++) {
+		arrow_set[i].x_st = arrow_set[i].x_ed = arrow_set[i].y_st = arrow_set[i].y_ed = 0;
+	}
+}
+
 void arrow_cpy(int u, int v) { //¸¨Öú¼ýÍ·Êý×é
 	arrow_set[u].x_st = arrow_set[v].x_st;
 	arrow_set[u].x_ed = arrow_set[v].x_ed;
