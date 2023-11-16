@@ -22,10 +22,6 @@ typedef struct LINK_RECT {
 	char str[6];
 } link_rect; //方框（节点）集合
 
-typedef struct LINK_ARROW {
-	int x_st, y_st, x_ed, y_ed;
-} link_arrow; //箭头集合
-
 const int LINK_MAX_SIZE = 7, LINK_PX = 50, LINK_MAXI = 50; //最大节点数， 节点（方格）的像素， 节点值的最大值
 
 link_node *head, *tail;
@@ -34,19 +30,11 @@ int link_x[LINK_MAX_SIZE + 2], link_y[LINK_MAX_SIZE + 2]; //输出定位
 int link_node_size = 0; //当前节点数量
 
 link_rect link_arr_rect[LINK_MAX_SIZE + 2]; //两个表用于动画时的更改和输出
-link_arrow link_arr_arrow[(LINK_MAX_SIZE + 1) << 1];
 
 void link_rect_cpy(int u, int v) { // 复制方格数组
 	strcpy(link_arr_rect[u].str, link_arr_rect[v].str);
 	link_arr_rect[u].x = link_arr_rect[v].x;
 	link_arr_rect[u].y = link_arr_rect[v].y;
-}
-
-void link_arrow_cpy(int u, int v) { //辅助箭头数组
-	link_arr_arrow[u].x_st = link_arr_arrow[v].x_st;
-	link_arr_arrow[u].x_ed = link_arr_arrow[v].x_ed;
-	link_arr_arrow[u].y_st = link_arr_arrow[v].y_st;
-	link_arr_arrow[u].y_ed = link_arr_arrow[v].y_ed;
 }
 
 void link_init() {
@@ -71,18 +59,18 @@ void link_init() {
 	link_arr_rect[1].x = link_x[1];
 	link_arr_rect[1].y = link_y[1];
 
-	link_arr_arrow[0].x_st = link_x[0] + LINK_PX + 5; //初始化link_arr_arrow表
-	link_arr_arrow[0].y_st = link_y[0] + LINK_PX / 2 - 10;
-	link_arr_arrow[0].x_ed = link_x[1] - 10;
-	link_arr_arrow[0].y_ed = link_y[1] + LINK_PX / 2 - 10;
+	arrow_set[1].x_st = link_x[0] + LINK_PX + 5; //初始化arrow_set表 奇数为nxet 偶数为pre
+	arrow_set[1].y_st = link_y[0] + LINK_PX / 2 - 10;
+	arrow_set[1].x_ed = link_x[1] - 10;
+	arrow_set[1].y_ed = link_y[1] + LINK_PX / 2 - 10;
 
-	link_arr_arrow[1].x_st = link_x[1] - 10;
-	link_arr_arrow[1].y_st = link_y[1] + LINK_PX / 2 + 10;
-	link_arr_arrow[1].x_ed = link_x[0] + LINK_PX + 5;
-	link_arr_arrow[1].y_ed = link_y[0] + LINK_PX / 2 + 10;
+	arrow_set[2].x_st = link_x[1] - 10;
+	arrow_set[2].y_st = link_y[1] + LINK_PX / 2 + 10;
+	arrow_set[2].x_ed = link_x[0] + LINK_PX + 5;
+	arrow_set[2].y_ed = link_y[0] + LINK_PX / 2 + 10;
 }
 
-void link_draw() { //按照link_arr_rect和link_arr_arrow绘制图形
+void link_draw() { //按照link_arr_rect和arrow_set绘制图形
 	link_node* p = head->next;
 	int i;
 
@@ -97,10 +85,9 @@ void link_draw() { //按照link_arr_rect和link_arr_arrow绘制图形
 		xyprintf(link_arr_rect[i].x + 5 * (5 - strlen(link_arr_rect[i].str)), link_arr_rect[i].y + 15, "%s", link_arr_rect[i].str);
 	}
 
-	for (i = 0; i < (link_node_size - 1) << 1; i++) { //输出箭头
-		if (link_arr_arrow[i].x_st == 0) continue; //不输出未初始化的箭头
-		draw_arrow(link_arr_arrow[i].x_st, link_arr_arrow[i].y_st, 
-				   link_arr_arrow[i].x_ed, link_arr_arrow[i].y_ed);
+	for (i = 1; i <= (link_node_size - 1) << 1; i++) { //输出箭头
+		if (arrow_set[i].x_st == 0) continue; //不输出未初始化的箭头
+		draw_arrow(i);
 	}
 }
 
@@ -111,14 +98,12 @@ void link_move_back(int loc) {
 			link_arr_rect[j].x += dx;
 		}
 
-		link_arr_arrow[(loc - 1) << 1].x_ed += dx;
-		link_arr_arrow[(loc - 1) << 1 | 1].x_st += dx;
+		arrow_set[(loc - 1) << 1 | 1].x_ed += dx;
+		arrow_set[loc << 1].x_st += dx;
 
-		for (int j = loc; j < link_node_size - 1; j++) {
-			link_arr_arrow[j << 1].x_st += dx;
-			link_arr_arrow[j << 1].x_ed += dx;
-			link_arr_arrow[j << 1 | 1].x_st += dx;
-			link_arr_arrow[j << 1 | 1].x_ed += dx;
+		for (int j = loc << 1 | 1; j <= (link_node_size - 1) << 1; j++) {
+			arrow_set[j].x_st += dx;
+			arrow_set[j].x_ed += dx;
 		}
 
 		link_draw();
@@ -130,11 +115,11 @@ void link_insert_rect(int loc, int val) { //插入方格
 		link_rect_cpy(i, i - 1);
 	}
 	link_arr_rect[loc].x = 0;
-	for (int i = (link_node_size << 1) - 1; i >= (loc + 1) << 1; i--) {
-		link_arrow_cpy(i, i - 2);
+	for (int i = link_node_size << 1; i >= (loc + 1) << 1; i--) {
+		arrow_cpy(i, i - 2);
 	}
-	link_arr_arrow[loc << 1].x_st = 0;
-	link_arr_arrow[loc << 1 | 1].x_st = 0;
+	arrow_set[loc << 1].x_st = 0;
+	arrow_set[loc << 1 | 1].x_st = 0;
 	link_node_size++; //增加节点数
 
 	color_t fill_color_pre = getfillcolor(), color_pre = getcolor();
@@ -143,7 +128,7 @@ void link_insert_rect(int loc, int val) { //插入方格
 
 	sprintf(link_arr_rect[loc].str, "%d", val);
 
-	for (int i = 0; i < 32; i++, delay_fps(60)) { //逐帧循环
+	for (int i = 0; i < 32; i++, delay_fps(60)) { //逐帧循环,方格渐入
 		link_draw();
 
 		setfillcolor(EGEARGB(a, 0x66, 0xcc, 0xff));
@@ -155,7 +140,7 @@ void link_insert_rect(int loc, int val) { //插入方格
 		a += da;
 	}
 
-	link_arr_rect[loc].x = link_x[loc];
+	link_arr_rect[loc].x = link_x[loc]; //添加方格实例
 	link_arr_rect[loc].y = link_y[loc] - 100;
 
 	setfillcolor(fill_color_pre);
@@ -163,82 +148,31 @@ void link_insert_rect(int loc, int val) { //插入方格
 }
 
 void link_insert_arrow(int loc) {
-	int a = 0, da = 16;
-	int fill_color_pre = getfillcolor();
+	arrow_appear(loc << 1 | 1, // loc.next = nxt
+				 link_x[loc] + LINK_PX + 5, link_y[loc] - 100 + LINK_PX / 2 - 10, 
+				 link_x[loc + 1] - 10, link_y[loc + 1] + LINK_PX / 2 - 10);
+	arrow_appear(loc << 1,  //loc.pre = pre
+				 link_x[loc] - 10, link_y[loc] - 100 + LINK_PX / 2 + 10, 
+				 link_x[loc - 1] + LINK_PX + 5, link_y[loc - 1] + LINK_PX / 2 + 10);
 
-	for (int i = 0; i < 32; i++, delay_fps(60)) { //逐帧循环
-		setfillcolor(EGEARGB(a, 0x00, 0x00, 0x00));
-		draw_arrow(link_x[loc] - 10, link_y[loc] - 100 + LINK_PX / 2 + 10, link_x[loc - 1] + LINK_PX + 5, link_y[loc - 1] + LINK_PX / 2 + 10, 0);
-		a += da;
-	}
-
-	a = 0;
-	for (int i = 0; i < 32; i++, delay_fps(60)) { //逐帧循环
-		setfillcolor(EGEARGB(a, 0x00, 0x00, 0x00));
-		draw_arrow(link_x[loc] + LINK_PX + 5, link_y[loc] - 100 + LINK_PX / 2 - 10, link_x[loc + 1] - 10, link_y[loc + 1] + LINK_PX / 2 - 10, 0);
-		a += da;
-	}
-
-	Sleep(200);
-	int x_st1 = link_arr_arrow[(loc - 1) << 1].x_st,
-		x_st2 = link_arr_arrow[(loc - 1) << 1 | 1].x_st,
-		y_st1 = link_arr_arrow[(loc - 1) << 1].y_st,
-		y_st2 = link_arr_arrow[(loc - 1) << 1 | 1].y_st,
-		x_ed1 = link_arr_arrow[(loc - 1) << 1].x_ed,
-		x_ed2 = link_arr_arrow[(loc - 1) << 1 | 1].x_ed,
-		y_ed1 = link_arr_arrow[(loc - 1) << 1].y_ed,
-		y_ed2 = link_arr_arrow[(loc - 1) << 1 | 1].y_ed;
-
-	link_arr_arrow[(loc - 1) << 1].x_st = 0;
-	link_arr_arrow[(loc - 1) << 1 | 1].x_st = 0;
-
-	link_draw();
-	draw_arrow(link_x[loc] - 10, link_y[loc] - 100 + LINK_PX / 2 + 10, link_x[loc - 1] + LINK_PX + 5, link_y[loc - 1] + LINK_PX / 2 + 10, 1);
-	draw_arrow(link_x[loc] + LINK_PX + 5, link_y[loc] - 100 + LINK_PX / 2 - 10, link_x[loc + 1] - 10, link_y[loc + 1] + LINK_PX / 2 - 10, 1);
-
-	a = 0;
-	for (int i = 0; i < 32; i++, delay_fps(60)) { //逐帧循环
-		setfillcolor(EGEARGB(a, 0x00, 0x00, 0x00));
-		draw_arrow(link_x[loc - 1] + LINK_PX + 5, link_y[loc - 1] + LINK_PX / 2 - 10, link_x[loc] - 10, link_y[loc] + LINK_PX / 2 - 10 - 100, 0);
-		a += da;
-	}
-
-	a = 0;
-	for (int i = 0; i < 32; i++, delay_fps(60)) { //逐帧循环
-		setfillcolor(EGEARGB(a, 0x00, 0x00, 0x00));
-		draw_arrow(link_x[loc + 1] - 10, link_y[loc + 1] + LINK_PX / 2 + 10, link_x[loc] + LINK_PX + 5, link_y[loc] + LINK_PX / 2 + 10 - 100, 0);
-		a += da;
-	}
-
-	link_arr_arrow[(loc - 1) << 1].x_st = link_x[loc - 1] + LINK_PX + 5; //修改link_arr_arrow表 前向节点
-	link_arr_arrow[(loc - 1) << 1].y_st = link_y[loc - 1] + LINK_PX / 2 - 10;
-	link_arr_arrow[(loc - 1) << 1].x_ed = link_x[loc] - 10;
-	link_arr_arrow[(loc - 1) << 1].y_ed = link_y[loc] + LINK_PX / 2 - 10 - 100;
-
-	link_arr_arrow[(loc - 1) << 1 | 1].x_st = link_x[loc] - 10;
-	link_arr_arrow[(loc - 1) << 1 | 1].y_st = link_y[loc] - 100 + LINK_PX / 2 + 10;
-	link_arr_arrow[(loc - 1) << 1 | 1].x_ed = link_x[loc - 1] + LINK_PX + 5;
-	link_arr_arrow[(loc - 1) << 1 | 1].y_ed = link_y[loc - 1] + LINK_PX / 2 + 10;
-
-	link_arr_arrow[loc << 1].x_st = link_x[loc] + LINK_PX + 5; //修改link_arr_arrow表 后向节点
-	link_arr_arrow[loc << 1].y_st = link_y[loc] - 100 + LINK_PX / 2 - 10;
-	link_arr_arrow[loc << 1].x_ed = link_x[loc + 1] - 10;
-	link_arr_arrow[loc << 1].y_ed = link_y[loc + 1] + LINK_PX / 2 - 10;
-
-	link_arr_arrow[loc << 1 | 1].x_st = link_x[loc + 1] - 10;
-	link_arr_arrow[loc << 1 | 1].y_st = link_y[loc + 1] + LINK_PX / 2 + 10;
-	link_arr_arrow[loc << 1 | 1].x_ed = link_x[loc] + LINK_PX + 5;
-	link_arr_arrow[loc << 1 | 1].y_ed = link_y[loc] + LINK_PX / 2 + 10 - 100;
-
+	arrow_disappear((loc - 1) << 1 | 1, link_draw); 
+	arrow_appear((loc - 1) << 1 | 1, 
+				  link_x[loc - 1] + LINK_PX + 5, link_y[loc - 1] + LINK_PX / 2 - 10, 
+				  link_x[loc] - 10, link_y[loc] + LINK_PX / 2 - 10 - 100);
+	
+	arrow_disappear((loc + 1) << 1, link_draw);
+	arrow_appear((loc + 1) << 1, 
+				  link_x[loc + 1] - 10, link_y[loc + 1] + LINK_PX / 2 + 10, 
+				  link_x[loc] + LINK_PX + 5, link_y[loc] + LINK_PX / 2 + 10 - 100);
 }
 
 void link_move_down(int loc) {
 	int dy = 2;
 	for (int i = 0; i < 50; i++, delay_fps(60)) { //逐帧循环
-		link_arr_arrow[(loc - 1) << 1].y_ed += dy;
-		link_arr_arrow[(loc - 1) << 1 | 1].y_st += dy;
-		link_arr_arrow[loc << 1].y_st += dy;
-		link_arr_arrow[loc << 1 | 1].y_ed += dy;
+		arrow_set[(loc - 1) << 1 | 1].y_ed += dy;
+		arrow_set[loc << 1].y_st += dy;
+		arrow_set[loc << 1 | 1].y_st += dy;
+		arrow_set[(loc + 1) << 1].y_ed += dy;
 		link_arr_rect[loc].y += dy;
 		link_draw();
 	}
