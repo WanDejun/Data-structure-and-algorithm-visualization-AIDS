@@ -6,7 +6,7 @@
 #define TEXTOUT
 
 typedef struct TEXT {
-	char str[32];
+	char str[64];
 	int x, y;
 	color_t color;
 	int font_size;
@@ -19,6 +19,7 @@ extern int text_cnt;
 void text_init();
 void text_cpy(int u, int v);
 void text_update(int loc, char str[], int x, int y, color_t color, int font_size, char font_name[]);
+void text_show(text txt);
 void text_show(int loc);
 void text_appear(int loc);
 void text_move(int loc, int dx, int dy, int f, void draw(), bool show_other_text = 1);

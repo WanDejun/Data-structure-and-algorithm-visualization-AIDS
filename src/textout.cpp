@@ -31,18 +31,22 @@ void text_update(int loc, char str[], int x, int y, color_t color, int font_size
 	strcpy(text_set[loc].font_name, font_name);
 }
 
-void text_show(int loc) {
+void text_show(text txt) {
 	color_t color_pre = getcolor();
-	LOGFONTA font_pre;
+	LOGFONT font_pre;
 	getfont(&font_pre);
 
-	setfont(text_set[loc].font_size, 0, text_set[loc].font_name);
-	setcolor(text_set[loc].color);
+	setfont(txt.font_size, 0, txt.font_name);
+	setcolor(txt.color);
 
-	xyprintf(text_set[loc].x, text_set[loc].y, text_set[loc].str);
+	xyprintf(txt.x, txt.y, txt.str);
 
 	setfont(&font_pre);
 	setcolor(color_pre);
+}
+
+void text_show(int loc) {
+	text_show(text_set[loc]);
 }
 
 void text_appear(int loc) { //Ω•»Î

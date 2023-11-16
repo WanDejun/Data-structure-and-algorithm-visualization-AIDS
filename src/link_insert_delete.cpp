@@ -1,10 +1,11 @@
-#include "link_insert.h"
+#include "link_insert_delete.h"
 #include <graphics.h>
 #include <stdlib.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "draw_arrow.h"
 #include "textout.h"
+#include "input_box.h"
 /*
 7个有效节点，2个哨兵节点，共9个
 x方向
@@ -23,7 +24,7 @@ typedef struct LINK_RECT {
 	char str[6];
 } link_rect; //方框（节点）集合
 
-const int LINK_MAX_SIZE = 7, LINK_PX = 50, LINK_MAXI = 50; //最大节点数， 节点（方格）的像素， 节点值的最大值
+const int LINK_MAX_SIZE = 2, LINK_PX = 50, LINK_MAXI = 50; //最大节点数， 节点（方格）的像素， 节点值的最大值
 
 link_node *head, *tail;
 
@@ -172,12 +173,14 @@ void link_insert_rect(int loc, int val) { //插入方格
 void link_insert_arrow(int loc) {
 	strcpy(text_set[2].str, "p->next = nxt");
 	link_draw_with_point();
+	Sleep(300);
 	arrow_appear(loc << 1 | 1, // loc.next = nxt
 				 link_x[loc] + LINK_PX + 5, link_y[loc] - 100 + LINK_PX / 2 - 10, 
 				 link_x[loc + 1] - 10, link_y[loc + 1] + LINK_PX / 2 - 10);
+
 	strcpy(text_set[2].str, "p->pre = pre");
 	link_draw_with_point();
-
+	Sleep(300);
 	arrow_appear(loc << 1,  //loc.pre = pre
 				 link_x[loc] - 10, link_y[loc] - 100 + LINK_PX / 2 + 10, 
 				 link_x[loc - 1] + LINK_PX + 5, link_y[loc - 1] + LINK_PX / 2 + 10);
@@ -218,7 +221,7 @@ void link_insert() {
 	text_appear(1);
 
 	int loc = 1;
-	char str[32];
+	char str[64];
 
 	while (nxt != tail) {
 		if (nxt->val >= p->val) break;
@@ -232,7 +235,11 @@ void link_insert() {
 		text_move(0, LINK_PX * 2, 0, 60, link_draw);
 		text_move(1, LINK_PX * 2, 0, 60, link_draw);
 	}
-	if (nxt == tail) strcpy(text_set[2].str, "nxt = tail; break;");
+	if (nxt == tail) strcpy(text_set[2].str, "nxt == tail; break;");
+	else {
+		sprintf(str, "nxt->val(%d) >= p->val(%d); break;", nxt->val, p->val);
+		strcpy(text_set[2].str, str);
+	}
 
 	link_move_back(loc);
 
@@ -265,4 +272,60 @@ void link_insert_main() {
 		link_draw();
 		Sleep(300);
 	}
+}
+
+void link_move_up(int loc) {
+	int dy = -2;
+	for (int i = 0; i < 50; i++, delay_fps(60)) { //逐帧循环
+		arrow_set[(loc - 1) << 1 | 1].y_ed += dy;
+		arrow_set[loc << 1].y_st += dy;
+		arrow_set[loc << 1 | 1].y_st += dy;
+		arrow_set[(loc + 1) << 1].y_ed += dy;
+		link_arr_rect[loc].y += dy;
+		link_draw();
+	}
+}
+
+void link_delete() {
+	int val = input_box_get(link_draw);
+
+	text_set[0].x = link_x[1] + 15;
+	text_appear(0);
+
+	int loc = 1;
+	char str[64];
+	link_node* p = head->next;
+
+	while (p != tail) {
+		if (p->val >= val) break;
+
+		sprintf(str, "p->val(%d) < val(%d)", p->val, val);
+		strcpy(text_set[2].str, str);
+
+		p = p->next;
+		loc++;
+		text_move(0, LINK_PX * 2, 0, 60, link_draw);
+	}
+	if (p == tail) strcpy(text_set[2].str, "p == tail; break; (unfind)");
+	else if (p->val != val) {
+		sprintf(str, "p->val(%d) > val; (unfind)", p->val);
+		strcpy(text_set[2].str, str);
+	}
+	else {
+		sprintf(str, "p->val(%d) == val(%d); (find)", p->val, val);
+		strcpy(text_set[2].str, str);
+	}
+
+	Sleep(500);
+	link_move_up(loc);
+}
+void link_delete_main() {
+	link_draw();
+
+	strcpy(text_set[1].str, "");
+	strcpy(text_set[0].str, "p");
+
+	link_delete();
+	link_draw();
+	Sleep(300);
 }
