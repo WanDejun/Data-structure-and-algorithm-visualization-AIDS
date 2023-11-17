@@ -2,7 +2,7 @@
 #ifndef LINK_INSERT_H
 #define LINK_INSERT_H
 
-extern bool quit_flag;
+extern bool link_quit_flag;
 
 void link_init();
 void link_insert_main();

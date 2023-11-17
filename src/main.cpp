@@ -3,6 +3,7 @@
 #include <time.h>
 #include "link.h"
 #include "input_box.h"
+#include "stack.h"
 using namespace std;
 
 void draw_test() { ; }
@@ -18,7 +19,8 @@ int main()
     input_box_init();
 
 
-    link_main();
+    stack_init();
+    stack_draw();
 
     //等待用户按键
     getch();

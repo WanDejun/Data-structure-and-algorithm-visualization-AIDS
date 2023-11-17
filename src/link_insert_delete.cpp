@@ -33,7 +33,7 @@ int link_node_size = 0; //当前节点数量
 
 link_rect link_arr_rect[LINK_MAX_SIZE + 2]; //两个表用于动画时的更改和输出
 
-bool quit_flag; //标记是否输入了quit键
+bool link_quit_flag; //标记是否输入了quit键
 
 void link_rect_cpy(int u, int v) { // 复制方格数组
 	strcpy(link_arr_rect[u].str, link_arr_rect[v].str);
@@ -46,7 +46,7 @@ void link_init() {
 
 	arrow_init();
 
-	quit_flag = 0;
+	link_quit_flag = 0;
 
 	for (int x = 215, y = 335, i = 0; i < LINK_MAX_SIZE + 2; i++, x += 100) { link_x[i] = x; link_y[i] = y; } //初始化坐标序列
 
@@ -238,7 +238,7 @@ void link_insert() {
 
 	link_insert_input_draw();
 	p->val = input_box_get();
-	if (p->val == -1) { quit_flag = 1; return; };
+	if (p->val == -1) { link_quit_flag = 1; return; };
 
 	text_set[0].x = text_set[1].x = 0;
 
@@ -305,7 +305,7 @@ void link_insert_main() {
 	text_update(0, "pre", link_x[0] + 15, link_y[0] + LINK_PX + 15, EGEARGB(255, 0x00, 0x00, 0x00), 20, "Hack");
 	text_update(1, "nxt", link_x[1] + 15, link_y[1] + LINK_PX + 30, EGEARGB(255, 0x00, 0x00, 0x00), 20, "Hack");
 
-	if (link_node_size < LINK_MAX_SIZE + 2 && !quit_flag) {
+	if (link_node_size < LINK_MAX_SIZE + 2 && !link_quit_flag) {
 		link_insert();
 		link_draw();
 		Sleep(300);
@@ -417,7 +417,7 @@ void link_delete() {
 	link_delete_input_draw();
 
 	int val = input_box_get();
-	if (val == -1) { quit_flag = 1; return; }
+	if (val == -1) { link_quit_flag = 1; return; }
 
 	text_cpy(3, 0);
 	text_set[3].x = link_x[1] + 15;
@@ -470,7 +470,7 @@ void link_delete_main() {
 	strcpy(text_set[1].str, "");
 	strcpy(text_set[0].str, "p");
 
-	if (link_node_size > 2 && !quit_flag) {
+	if (link_node_size > 2 && !link_quit_flag) {
 		link_delete();
 		link_draw();
 		Sleep(300);
@@ -478,7 +478,7 @@ void link_delete_main() {
 }
 
 void link_free() {
-	link_node* p = head, * q;
+	link_node* p = head, * q = head->next;
 	while (q != nullptr) {
 		q = p->next;
 		free(p);

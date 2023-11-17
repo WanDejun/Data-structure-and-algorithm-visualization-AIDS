@@ -9,7 +9,7 @@ typedef struct {
 	text txt; //文本
 } rect_with_text; //方格和字符
 
-extern bool quit_flag;
+extern bool link_quit_flag;
 
 void link_UI() { // 不清屏， 覆盖打印 x:(300-450)px y:(400-480, 500-580, 600-680)px
 	rect_with_text key[3];
@@ -68,7 +68,7 @@ void link_main() {
 	int x, y;
 	mouse_msg msg = { 0 };
 
-	for (; is_run() && !quit_flag; delay_fps(60)) {
+	for (; is_run() && !link_quit_flag; delay_fps(60)) {
 		link_UI();
 
 		//获取鼠标消息，此函数不会等待，运行后会立即返回
@@ -93,7 +93,7 @@ void link_main() {
 		else if (y > 20 && y < 70) {
 			if (x > 1180 && x < 1260) {
 				link_free();
-				quit_flag = 1;
+				link_quit_flag = 1;
 			}
 		}
 	}
