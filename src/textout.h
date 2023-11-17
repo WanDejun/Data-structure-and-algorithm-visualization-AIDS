@@ -21,7 +21,7 @@ void text_cpy(int u, int v);
 void text_update(int loc, char str[], int x, int y, color_t color, int font_size, char font_name[]);
 void text_show(text txt);
 void text_show(int loc);
-void text_appear(int loc);
+void text_appear(int loc, void draw());
 void text_move(int loc, int dx, int dy, int f, void draw(), bool show_other_text = 1);
 
 #endif // !TEXTOUT

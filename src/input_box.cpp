@@ -13,8 +13,10 @@ typedef struct {
 	text txt; //ÎÄ±¾
 } rect_with_text; //·½¸ñºÍ×Ö·û
 
-rect_with_text rect_set[12]; //12¸ö°´¼ü
+rect_with_text rect_set[12]; //12¸ö°´¼ü (0-9, BACK, ENTER)
 rect screen; //»ØÏÔ±³¾°
+rect_with_text quit;
+rect_with_text rd;
 text input_num[2]; //»ØÏÔÊý×Ö [0]ÎªµÍÎ»£¨ÔÚÓÒ£© [1]Îª¸ßÎ»£¨ÔÚ×ó£©
 
 void input_box_init() {
@@ -68,6 +70,34 @@ void input_box_init() {
 	input_num[0].y = 405;
 	input_num[1].x = 170;
 	input_num[1].y = 405;
+
+	//quit³õÊ¼»¯
+	strcpy(quit.txt.str, "QUIT");
+	quit.txt.color = EGEARGB(255, 0x200, 0x200, 0x200);
+	quit.txt.font_size = 22;
+	strcpy(quit.txt.font_name, "Hack");
+	quit.txt.x = 1180 + 13;
+	quit.txt.y = 20 + 18;
+
+	quit.rt.color = EGEARGB(255, 188, 36, 36);
+	quit.rt.x = 1180;
+	quit.rt.y = 20;
+	quit.rt.x_size = 80;
+	quit.rt.y_size = 50;
+
+	//rand³õÊ¼»¯
+	strcpy(rd.txt.str, "RAND");
+	rd.txt.color = EGEARGB(255, 0x00, 0x220, 0x155);
+	rd.txt.font_size = 18;
+	strcpy(rd.txt.font_name, "Hack");
+	rd.txt.x = 230 + 5;
+	rd.txt.y = 460 + 20;
+
+	rd.rt.color = EGEARGB(255, 188, 36, 36);
+	rd.rt.x = 230;
+	rd.rt.y = 460;
+	rd.rt.x_size = 50;
+	rd.rt.y_size = 50;
 }
 
 void input_box_show() { //Êä³öÕû¸öÐ¡¼üÅÌ
@@ -76,6 +106,20 @@ void input_box_show() { //Êä³öÕû¸öÐ¡¼üÅÌ
 		text_show(rect_set[i].txt);
 	}
 	rect_show(screen);
+
+	text_show(input_num[0]);
+	text_show(input_num[1]);
+
+	rect_show(quit.rt);
+	text_show(quit.txt);
+
+	rect_show(rd.rt);
+	text_show(rd.txt);
+}
+
+void input_box_flush() {
+	rect_show(screen);
+
 	text_show(input_num[0]);
 	text_show(input_num[1]);
 }
@@ -95,13 +139,22 @@ void press_clr() {
 	input_num[1].str[0] = '0';
 }
 
-int input_box_get(void draw()) { //»ñÈ¡ÊäÈë£¬Ä¿Ç°Ö»Ð´ÁËÊó±êµã»÷¿ÉÊÓ»¯Ð¡¼üÅÌÊäÈë£¬ ÓÐ¿ÕÁË¿ÉÒÔÐ´Í¨¹ý¼üÅÌÊäÈëµÄ´úÂë
+void press_rand() {
+	input_num[0].str[0] = '0' + rand() % 10;
+	input_num[1].str[0] = '0' + rand() % 10;
+}
+
+int input_box_get() { //»ñÈ¡ÊäÈë, ·µ»ØÊäÈëÖµ£¬ÈôÊäÈëquit·µ»Ø-1£¬Ä¿Ç°Ö»Ð´ÁËÊó±êµã»÷¿ÉÊÓ»¯Ð¡¼üÅÌÊäÈë£¬ ÓÐ¿ÕÁË¿ÉÒÔÐ´Í¨¹ý¼üÅÌÊäÈëµÄ´úÂë
+	input_num[0].str[0] = input_num[1].str[0] = '0';
+
 	int x, y, pre_n = -1;
 	mouse_msg msg = { 0 };
 	double time_pre = fclock(), time;
 
+	input_box_show();
+
 	for (; is_run(); delay_fps(60)) {
-		input_box_show();
+		input_box_flush();
 
 		//»ñÈ¡Êó±êÏûÏ¢£¬´Ëº¯Êý²»»áµÈ´ý£¬ÔËÐÐºó»áÁ¢¼´·µ»Ø
 		while (mousemsg()) {
@@ -125,6 +178,10 @@ int input_box_get(void draw()) { //»ñÈ¡ÊäÈë£¬Ä¿Ç°Ö»Ð´ÁËÊó±êµã»÷¿ÉÊÓ»¯Ð¡¼üÅÌÊäÈë£
 			else if (x > 170 && x < 220 && (pre_n != 9 || time - time_pre >= 0.2)) {
 				pre_n = 9;
 				press_num(9);
+			}
+			else if (x > 230 && x < 280 && (pre_n != 10 || time - time_pre >= 0.2)) {
+				pre_n = 10;
+				press_rand();
 			}
 		}
 		else if (y > 520 && y < 570) {
@@ -167,6 +224,11 @@ int input_box_get(void draw()) { //»ñÈ¡ÊäÈë£¬Ä¿Ç°Ö»Ð´ÁËÊó±êµã»÷¿ÉÊÓ»¯Ð¡¼üÅÌÊäÈë£
 			else if (x > 170 && x < 220 && (pre_n != 11 || time - time_pre >= 0.2)) {
 				pre_n = 11;
 				return (input_num[1].str[0] - '0') * 10 + input_num[0].str[0] - '0';
+			}
+		}
+		else if (y > 20 && y < 70) {
+			if (x > 1180 && x < 1260) {
+				return -1;
 			}
 		}
 		time_pre = time;

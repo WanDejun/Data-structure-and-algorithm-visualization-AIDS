@@ -39,7 +39,7 @@ void text_show(text txt) {
 	setfont(txt.font_size, 0, txt.font_name);
 	setcolor(txt.color);
 
-	xyprintf(txt.x, txt.y, txt.str);
+	ege_drawtext(txt.str, txt.x, txt.y);
 
 	setfont(&font_pre);
 	setcolor(color_pre);
@@ -49,12 +49,15 @@ void text_show(int loc) {
 	text_show(text_set[loc]);
 }
 
-void text_appear(int loc) { //Ω•»Î
+void text_appear(int loc, void draw()) { //Ω•»Î
 	int a = 0, da = 8;
 	text_set[loc].color %= (1 << 24);
 	for (int i = 0; i < 32; i++, delay_fps(60)) { //÷÷°—≠ª∑
+		draw();
 		text_show(loc);
-		text_set[loc].color += a * (1 << 24);
+		text_set[loc].color %= (1 << 24);
+		(a += da) %= 256;
+		text_set[loc].color = a * (1 << 24);
 	}
 	text_set[loc].color |= (255ll * (1ll << 24));
 }
@@ -63,6 +66,8 @@ void text_move(int loc, int dx, int dy, int f, void draw(), bool show_other_text
 	double x = text_set[loc].x, y = text_set[loc].y, eps = 1e-6;
 	double dx_ = static_cast<double>(dx) / f, dy_ = static_cast<double>(dy) / f;
 	for (int i = 0; i < f; i++, delay_fps(60)) { //÷÷°—≠ª∑
+		x += dx_; y += dy_;
+
 		text_set[loc].x = x + eps;
 		text_set[loc].y = y + eps;
 
@@ -73,6 +78,5 @@ void text_move(int loc, int dx, int dy, int f, void draw(), bool show_other_text
 			}
 		}
 		text_show(loc);
-		x += dx_; y += dy_;
 	}
 }
