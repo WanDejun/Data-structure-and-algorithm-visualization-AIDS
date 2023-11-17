@@ -30,8 +30,8 @@ void input_box_init() {
 		rect_set[i].txt.color = EGEARGB(255, 0x00, 0x00, 0x00);
 		strcpy(rect_set[i].txt.font_name, "Hack");
 		rect_set[i].txt.font_size = 20;
-		rect_set[i].txt.x = 50 + 60 * (i % 3) + 20;
-		rect_set[i].txt.y = 460 + 60 * static_cast<int>(i / 3) + 15;
+		rect_set[i].txt.x = 50 + 60 * (i % 3) + 18;
+		rect_set[i].txt.y = 460 + 60 * static_cast<int>(i / 3) + 16;
 	}
 	strcpy(rect_set[0].txt.str, "7");
 	strcpy(rect_set[1].txt.str, "8");

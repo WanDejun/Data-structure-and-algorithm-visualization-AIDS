@@ -19,8 +19,7 @@ int main()
     input_box_init();
 
 
-    stack_init();
-    stack_draw();
+    stack_main();
 
     //等待用户按键
     getch();

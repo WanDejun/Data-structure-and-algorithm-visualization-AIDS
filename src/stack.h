@@ -2,7 +2,6 @@
 #ifndef STACK_H
 #define STACK_H
 
-void stack_init();
-void stack_draw();
+void stack_main();
 
 #endif // !STACK_H
