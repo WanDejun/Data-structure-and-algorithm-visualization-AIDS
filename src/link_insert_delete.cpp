@@ -44,9 +44,13 @@ void link_rect_cpy(int u, int v) { // 复制方格数组
 void link_init() {
 	cleardevice(); //清屏
 
+	arrow_init();
+
 	quit_flag = 0;
 
 	for (int x = 215, y = 335, i = 0; i < LINK_MAX_SIZE + 2; i++, x += 100) { link_x[i] = x; link_y[i] = y; } //初始化坐标序列
+
+	text_update(2, "", 100, 100, EGEARGB(255, 0x00, 0x00, 0x00), 30, "Hack");
 
 	text_init();
 
@@ -295,12 +299,13 @@ void link_out_info() { // text_set[2]用于存输出信息
 }
 
 void link_insert_main() {
-	arrow_init();
-	link_init();
 	link_draw();
-	Sleep(1000);
+	Sleep(500);
 
-	while (link_node_size < LINK_MAX_SIZE + 2 && !quit_flag) {
+	text_update(0, "pre", link_x[0] + 15, link_y[0] + LINK_PX + 15, EGEARGB(255, 0x00, 0x00, 0x00), 20, "Hack");
+	text_update(1, "nxt", link_x[1] + 15, link_y[1] + LINK_PX + 30, EGEARGB(255, 0x00, 0x00, 0x00), 20, "Hack");
+
+	if (link_node_size < LINK_MAX_SIZE + 2 && !quit_flag) {
 		link_insert();
 		link_draw();
 		Sleep(300);
@@ -465,7 +470,7 @@ void link_delete_main() {
 	strcpy(text_set[1].str, "");
 	strcpy(text_set[0].str, "p");
 
-	while (link_node_size > 2 && !quit_flag) {
+	if (link_node_size > 2 && !quit_flag) {
 		link_delete();
 		link_draw();
 		Sleep(300);
