@@ -4,6 +4,7 @@
 #include "link.h"
 #include "input_box.h"
 #include "stack.h"
+#include "stack_by_link.h"
 using namespace std;
 
 void draw_test() { ; }
@@ -19,7 +20,7 @@ int main()
     input_box_init();
 
 
-    stack_main();
+    stack_by_link_main();
 
     //等待用户按键
     getch();

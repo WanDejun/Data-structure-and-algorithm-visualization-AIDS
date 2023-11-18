@@ -129,17 +129,17 @@ void input_box_show_with(void draw()) { //在draw的背景上输出小键盘
 	input_box_show();
 }
 
-void press_num(int num) {
+void press_num(int num) { //处理数字键被按下
 	input_num[1].str[0] = input_num[0].str[0];
 	input_num[0].str[0] = '0' + num;
 }
 
-void press_clr() {
+void press_clr() { //处理clr被按下
 	input_num[0].str[0] = '0';
 	input_num[1].str[0] = '0';
 }
 
-void press_rand() {
+void press_rand() { //处理rand被按下
 	input_num[0].str[0] = '0' + rand() % 10;
 	input_num[1].str[0] = '0' + rand() % 10;
 }
@@ -150,6 +150,7 @@ int input_box_get() { //获取输入, 返回输入值，若输入quit返回-1，目前只写了鼠标点
 	int x, y, pre_n = -1;
 	mouse_msg msg = { 0 };
 	double time_pre = fclock(), time;
+	double det_time = 0.1;
 
 	input_box_show();
 
@@ -160,73 +161,74 @@ int input_box_get() { //获取输入, 返回输入值，若输入quit返回-1，目前只写了鼠标点
 		while (mousemsg()) {
 			msg = getmouse();
 		}
-		time = fclock();
 		if (!msg.is_down()) continue;
+
+		time = fclock(); //记录时间， 防止同一个键在相邻两帧均被按下而被判成两次点击
 
 		x = msg.x;
 		y = msg.y;
 
-		if (y > 460 && y < 510) {
-			if (x > 50 && x < 100 && (pre_n != 7 || time - time_pre >= 0.2)) {
+		if (y > 460 && y < 510) { //判断按键，处理鼠标事件
+			if (x > 50 && x < 100 && (pre_n != 7 || time - time_pre >= det_time)) {
 				pre_n = 7;
 				press_num(7);
 			}
-			else if (x > 110 && x < 160 && (pre_n != 8 || time - time_pre >= 0.2)) {
+			else if (x > 110 && x < 160 && (pre_n != 8 || time - time_pre >= det_time)) {
 				pre_n = 8;
 				press_num(8);
 			}
-			else if (x > 170 && x < 220 && (pre_n != 9 || time - time_pre >= 0.2)) {
+			else if (x > 170 && x < 220 && (pre_n != 9 || time - time_pre >= det_time)) {
 				pre_n = 9;
 				press_num(9);
 			}
-			else if (x > 230 && x < 280 && (pre_n != 10 || time - time_pre >= 0.2)) {
+			else if (x > 230 && x < 280 && (pre_n != 10 || time - time_pre >= det_time)) {
 				pre_n = 10;
 				press_rand();
 			}
 		}
 		else if (y > 520 && y < 570) {
-			if (x > 50 && x < 100 && (pre_n != 4 || time - time_pre >= 0.2)) {
+			if (x > 50 && x < 100 && (pre_n != 4 || time - time_pre >= det_time)) {
 				pre_n = 4;
 				press_num(4);
 			}
-			else if (x > 110 && x < 160 && (pre_n != 5 || time - time_pre >= 0.2)) {
+			else if (x > 110 && x < 160 && (pre_n != 5 || time - time_pre >= det_time)) {
 				pre_n = 5;
 				press_num(5);
 			}
-			else if (x > 170 && x < 220 && (pre_n != 6 || time - time_pre >= 0.2)) {
+			else if (x > 170 && x < 220 && (pre_n != 6 || time - time_pre >= det_time)) {
 				pre_n = 6;
 				press_num(6);
 			}
 		}
 		else if (y > 580 && y < 630) {
-			if (x > 50 && x < 100 && (pre_n != 1 || time - time_pre >= 0.2)) {
+			if (x > 50 && x < 100 && (pre_n != 1 || time - time_pre >= det_time)) {
 				pre_n = 1;
 				press_num(1);
 			}
-			else if (x > 110 && x < 160 && (pre_n != 2 || time - time_pre >= 0.2)) {
+			else if (x > 110 && x < 160 && (pre_n != 2 || time - time_pre >= det_time)) {
 				pre_n = 2;
 				press_num(2);
 			}
-			else if (x > 170 && x < 220 && (pre_n != 3 || time - time_pre >= 0.2)) {
+			else if (x > 170 && x < 220 && (pre_n != 3 || time - time_pre >= det_time)) {
 				pre_n = 3;
 				press_num(3);
 			}
 		}
-		else if (y > 640 && y < 690 && (pre_n != 0 || time - time_pre >= 0.2)) {
+		else if (y > 640 && y < 690 && (pre_n != 0 || time - time_pre >= det_time)) {
 			if (x > 50 && x < 100) {
 				pre_n = 0;
 				press_num(0);
 			}
-			else if (x > 110 && x < 160 && (pre_n != 10 || time - time_pre >= 0.2)) {
+			else if (x > 110 && x < 160 && (pre_n != 10 || time - time_pre >= det_time)) {
 				pre_n = 10;
 				press_clr();
 			}
-			else if (x > 170 && x < 220 && (pre_n != 11 || time - time_pre >= 0.2)) {
+			else if (x > 170 && x < 220 && (pre_n != 11 || time - time_pre >= det_time)) {
 				pre_n = 11;
 				return (input_num[1].str[0] - '0') * 10 + input_num[0].str[0] - '0';
 			}
 		}
-		else if (y > 20 && y < 70) {
+		else if (y > 20 && y < 70) { //quit被按下
 			if (x > 1180 && x < 1260) {
 				return -1;
 			}
