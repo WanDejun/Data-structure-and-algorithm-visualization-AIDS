@@ -309,12 +309,12 @@ void stack_UI() { // 不清屏， 覆盖打印 x:(300-450)px y:(400-480, 500-580, 600-68
 void stack_main() {
 	stack_init();
 	stack_draw();
-
+	stack_UI();
+	
 	int x, y;
 	mouse_msg msg = { 0 };
 
 	for (; is_run() && !stack_quit_flag; delay_fps(60)) {
-		stack_UI();
 
 		//获取鼠标消息，此函数不会等待，运行后会立即返回
 		while (mousemsg()) {
@@ -328,9 +328,11 @@ void stack_main() {
 		if (x > 300 && x < 450) {
 			if (y > 500 && y < 580) {
 				stack_push();
+				stack_UI();
 			}
 			else if (y > 600 && y < 680) {
 				stack_pop();
+				stack_UI();
 			}
 		}
 		else if (y > 20 && y < 70) {

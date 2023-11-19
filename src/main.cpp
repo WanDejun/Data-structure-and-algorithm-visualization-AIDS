@@ -6,6 +6,7 @@
 #include "stack.h"
 #include "stack_by_link.h"
 #include "cycle_queue.h"
+#include "draw_error.h"
 using namespace std;
 
 void draw_test() { ; }
@@ -20,10 +21,11 @@ int main()
     ege_enable_aa(true); // 开启抗锯齿
     input_box_init(); //初始化输入控制台
     setlinewidth(4); //初始化线型
+    draw_error_init();
 
 
 
-    stack_by_link_main();
+    stack_main();
 
     //等待用户按键
     getch();
