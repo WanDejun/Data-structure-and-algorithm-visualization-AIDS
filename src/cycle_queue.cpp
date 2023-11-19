@@ -1,3 +1,4 @@
+//倾斜角均定义为与y负方向的夹角
 #include "cycle_queue.h"
 #include <graphics.h>
 #include <math.h>
@@ -30,22 +31,23 @@ typedef struct {
 	bool visible;
 } arrow_with_text; //箭头和文本
 
+// 圆心x，y坐标							  最大元素个数				小圆半径	  大圆半径	文本和箭头末端的x，y差值
 const int center_x = 900, center_y = 360, cycle_queue_max_size = 7, r1 = 150, r2 = 250, text_det_x = 5, text_det_y = 10;
 
-bool cycle_queue_quit_flag;
+bool cycle_queue_quit_flag; //标记退出
 
-color_with_text cycle_queue_node_set[cycle_queue_max_size + 1];
+color_with_text cycle_queue_node_set[cycle_queue_max_size + 1]; //节点数组
 
-static arrow_with_text tail_p, head_p;
+static arrow_with_text tail_p, head_p; //可视化指针
 
 int tail_loc, head_loc;
 
-void cycle_queue_init() {
+void cycle_queue_init() { //初始化
 	cycle_queue_quit_flag = 0;
 
-	tail_loc = head_loc = 0;
+	tail_loc = head_loc = 0; 
 
-	for (int i = 0; i <= cycle_queue_max_size; i++) {
+	for (int i = 0; i <= cycle_queue_max_size; i++) { //初始化节点
 		cycle_queue_node_set[i].visible = 0;
 
 		cycle_queue_node_set[i].txt.x = center_x + static_cast<double>(r1 + r2) / 2 * sin(PI * (1.0 / 8 + i * 1.0 / 4)) - text_det_x;
@@ -54,15 +56,16 @@ void cycle_queue_init() {
 		strcpy(cycle_queue_node_set[i].txt.font_name, "Hack");
 	}
 
-	tail_p.r_st = 80;
-	tail_p.r_ed = 140;
-	tail_p.theta = PI / (cycle_queue_max_size + 1);
-	tail_p.txt.color = BLACK;
+	//初始化头尾指针
+	tail_p.r_st = 80; //箭头起始端距圆心的半径
+	tail_p.r_ed = 140; //箭头终止端距圆心的半径
+	tail_p.theta = PI / (cycle_queue_max_size + 1); //箭头倾斜角
+	tail_p.txt.color = BLACK; //初始化文本
 	strcpy(tail_p.txt.font_name, "Hack");
 	tail_p.txt.font_size = 30;
 	strcpy(tail_p.txt.str, "Tail");
 	tail_p.r_txt = 0;
-	tail_p.visible = 1;
+	tail_p.visible = 1; //调为可见
 
 	head_p.r_st = 310;
 	head_p.r_ed = 260;
@@ -75,23 +78,23 @@ void cycle_queue_init() {
 	head_p.visible = 1;
 }
 
-void cycle_queue_draw_tail() {
-	tail_p.txt.x = center_x + tail_p.r_txt * sin(tail_p.theta) - 30;
+void cycle_queue_draw_tail() { //输出尾指针
+	tail_p.txt.x = center_x + tail_p.r_txt * sin(tail_p.theta) - 30; //根据theta re计算文本位置 30 和 20 为偏移量，保证居中显示
 	tail_p.txt.y = center_y - tail_p.r_txt * cos(tail_p.theta) - 20;
 
-	arrow t;
+	static arrow t; //根据theta初始化箭头t
 	t.x_st = center_x + tail_p.r_st * sin(tail_p.theta);
 	t.x_ed = center_x + tail_p.r_ed * sin(tail_p.theta);
 	t.y_st = center_y - tail_p.r_st * cos(tail_p.theta);
 	t.y_ed = center_y - tail_p.r_ed * cos(tail_p.theta);
 
-	setfillcolor(BLACK);
-	draw_arrow(t);
+	setfillcolor(BLACK); //箭头颜色
+	draw_arrow(t); //绘制箭头
 
-	text_show(tail_p.txt);
+	text_show(tail_p.txt); //输出文本
 }
 
-void cycle_queue_draw_head() {
+void cycle_queue_draw_head() { //输出头指针，与tail对照
 	head_p.txt.x = center_x + head_p.r_txt * sin(head_p.theta) - 30;
 	head_p.txt.y = center_y - head_p.r_txt * cos(head_p.theta) - 20;
 
@@ -107,15 +110,15 @@ void cycle_queue_draw_head() {
 	text_show(head_p.txt);
 }
 
-void cycle_queue_draw_bk() {
+void cycle_queue_draw_bk() { //绘制背景
 	setcolor(BLACK);
 
-	ege_ellipse(center_x - r2, center_y - r2, r2 * 2, r2 * 2);
+	ege_ellipse(center_x - r2, center_y - r2, r2 * 2, r2 * 2); //绘制两个圆
 	ege_ellipse(center_x - r1, center_y - r1, r1 * 2, r1 * 2);
 
 	int x_st, x_ed, y_st, y_ed;
 
-	for (int i = 0; i < cycle_queue_max_size + 1; i++) {
+	for (int i = 0; i < cycle_queue_max_size + 1; i++) { //绘制格子的边框
 		x_st = center_x + r1 * sin(2 * i * PI / (cycle_queue_max_size + 1));
 		x_ed = center_x + r2 * sin(2 * i * PI / (cycle_queue_max_size + 1));
 		y_st = center_y - r1 * cos(2 * i * PI / (cycle_queue_max_size + 1));
@@ -124,15 +127,15 @@ void cycle_queue_draw_bk() {
 	}
 }
 
-void cycle_queue_draw() {
+void cycle_queue_draw() { //主输出函数（会清屏）
 	cleardevice();
 
-	cycle_queue_draw_bk();
+	cycle_queue_draw_bk(); //背景
 
-	if (tail_p.visible) cycle_queue_draw_tail();
+	if (tail_p.visible) cycle_queue_draw_tail(); //两根指针
 	if (head_p.visible) cycle_queue_draw_head();
 
-	for (int i = 0; i <= cycle_queue_max_size; i++) {
+	for (int i = 0; i <= cycle_queue_max_size; i++) { //每个节点输出
 		if (cycle_queue_node_set[i].visible) {
 			setfillcolor(cycle_queue_node_set[i].col);
 			
@@ -142,7 +145,7 @@ void cycle_queue_draw() {
 	}
 }
 
-void cycle_queue_node_appear(int val) {
+void cycle_queue_node_appear(int val) { //渐入（没渐起来，ege函数貌似不支持？）
 	int a = -1, da = 4;
 
 	cycle_queue_node_set[tail_loc].col = rand_color(); //随机颜色
@@ -156,7 +159,7 @@ void cycle_queue_node_appear(int val) {
 
 	cycle_queue_node_set[tail_loc].visible = 1;
 
-	for (int i = 0; i < 64; i++, delay_fps(60)) {
+	for (int i = 0; i < 64; i++, delay_fps(60)) { //逐帧循环
 		a += da;
 
 		cycle_queue_node_set[tail_loc].col %= (1ll << 24);
@@ -167,10 +170,9 @@ void cycle_queue_node_appear(int val) {
 
 		cycle_queue_draw();
 	}
-	cycle_queue_draw();
 }
 
-void cycle_queue_head_move(double det_theta) {
+void cycle_queue_head_move(double det_theta) { //移动头指针（由于头指针由theta控制，只需要改变theta值即可）
 	double d_theta = det_theta / 60 + 1e-6;
 	for (int i = 0; i < 60; i++, delay_fps(60)) {
 		head_p.theta += d_theta;
@@ -179,7 +181,7 @@ void cycle_queue_head_move(double det_theta) {
 	}
 }
 
-void cycle_queue_tail_move(double det_theta) {
+void cycle_queue_tail_move(double det_theta) { //绘制尾指针（与head对照）
 	double d_theta = det_theta / 60 + 1e-6;
 	for (int i = 0; i < 60; i++, delay_fps(60)) {
 		tail_p.theta += d_theta;
@@ -188,27 +190,27 @@ void cycle_queue_tail_move(double det_theta) {
 	}
 }
 
-void cycle_queue_push() {
-	cycle_queue_draw();
+void cycle_queue_push() { //入队
+	cycle_queue_draw(); //覆盖绘制一次
 
-	if ((tail_loc + 1) % (cycle_queue_max_size + 1) == head_loc) {
+	if ((tail_loc + 1) % (cycle_queue_max_size + 1) == head_loc) { //判断是否有空间
 		draw_error();
 		return;
 	}
 
-	int val = input_box_get();
+	int val = input_box_get(); //获取输入
 
 	if (val == -1) {
 		cycle_queue_quit_flag = 1;
 		return;
 	}
 
-	cycle_queue_node_appear(val);
-	cycle_queue_tail_move(2 * PI / (cycle_queue_max_size + 1));
-	(tail_loc = tail_loc + 1) %= (cycle_queue_max_size + 1);
+	cycle_queue_node_appear(val); //新增节点
+	cycle_queue_tail_move(2 * PI / (cycle_queue_max_size + 1)); //移动指针
+	(tail_loc = tail_loc + 1) %= (cycle_queue_max_size + 1); //指针下标+1取模
 }
 
-void cycle_queue_node_disappear() {
+void cycle_queue_node_disappear() { //节点图形消失
 	int a = 256, da = 4;
 
 	for (int i = 0; i < 64; i++, delay_fps(60)) {
@@ -227,8 +229,8 @@ void cycle_queue_node_disappear() {
 	cycle_queue_node_set[head_loc].visible = 0;
 }
 
-void cycle_queue_pop() {
-	cycle_queue_draw();
+void cycle_queue_pop() { //出队
+	cycle_queue_draw(); //覆盖绘制
 
 	if (head_loc == tail_loc) {
 		draw_error();
@@ -293,8 +295,8 @@ void cycle_queue_UI() { // 不清屏， 覆盖打印 x:(300-450)px y:(400-480, 500-580, 
 	text_show(quit.txt);
 }
 
-void cycle_queue_main() {
-	cycle_queue_init();
+void cycle_queue_main() { //入口函数
+	cycle_queue_init(); //初始化
 	cycle_queue_draw();
 
 	int x, y;
@@ -308,7 +310,7 @@ void cycle_queue_main() {
 		}
 		if (!msg.is_down()) continue;
 
-		flushmouse();
+		flushmouse(); //清空鼠标输入队列
 
 		x = msg.x;
 		y = msg.y;
