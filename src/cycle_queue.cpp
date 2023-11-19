@@ -189,19 +189,19 @@ void cycle_queue_tail_move(double det_theta) {
 }
 
 void cycle_queue_push() {
+	cycle_queue_draw();
+
+	if ((tail_loc + 1) % (cycle_queue_max_size + 1) == head_loc) {
+		draw_error();
+		return;
+	}
+
 	int val = input_box_get();
 
 	if (val == -1) {
 		cycle_queue_quit_flag = 1;
 		return;
 	}
-
-	if (tail_loc + 1 % (cycle_queue_max_size + 1) == head_loc) {
-		draw_error();
-		return;
-	}
-
-	cycle_queue_draw();
 
 	cycle_queue_node_appear(val);
 	cycle_queue_tail_move(2 * PI / (cycle_queue_max_size + 1));
@@ -300,14 +300,15 @@ void cycle_queue_main() {
 	int x, y;
 	mouse_msg msg = { 0 };
 
+	cycle_queue_UI();
 	for (; is_run() && !cycle_queue_quit_flag; delay_fps(60)) {
-		cycle_queue_UI();
-
 		//获取鼠标消息，此函数不会等待，运行后会立即返回
 		while (mousemsg()) {
 			msg = getmouse();
 		}
 		if (!msg.is_down()) continue;
+
+		flushmouse();
 
 		x = msg.x;
 		y = msg.y;
@@ -315,9 +316,11 @@ void cycle_queue_main() {
 		if (x > 300 && x < 450) {
 			if (y > 500 && y < 580) {
 				cycle_queue_push();
+				cycle_queue_UI();
 			}
 			else if (y > 600 && y < 680) {
 				cycle_queue_pop();
+				cycle_queue_UI();
 			}
 		}
 		else if (y > 20 && y < 70) {
