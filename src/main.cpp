@@ -5,6 +5,7 @@
 #include "input_box.h"
 #include "stack.h"
 #include "stack_by_link.h"
+#include "cycle_queue.h"
 using namespace std;
 
 void draw_test() { ; }
@@ -17,7 +18,9 @@ int main()
     setbkcolor(EGERGB(0xff, 0xff, 0xff)); //设置背景为白色
     srand(time(0)); //初始化随机数种子
     ege_enable_aa(true); // 开启抗锯齿
-    input_box_init();
+    input_box_init(); //初始化输入控制台
+    setlinewidth(4); //初始化线型
+
 
 
     stack_by_link_main();

@@ -150,6 +150,8 @@ void stack_by_link_appear(int val) {
 }
 
 void stack_by_link_push() {
+	stack_by_link_draw();
+
 	int val = input_box_get(); //获取输入
 
 	if (val == -1) { //判断quit
@@ -185,7 +187,6 @@ void stack_by_link_top_move_front() {
 	top_text.visible = 1;
 }
 
-
 void stack_by_link_disappear() {
 	int a = 256, da = 4;
 
@@ -214,6 +215,8 @@ void stack_by_link_disappear() {
 }
 
 void stack_by_link_pop() {
+	stack_by_link_draw();
+
 	stack_by_link_disappear(); //删除节点
 
 	stack_by_link_top_move_front(); //指针前移
