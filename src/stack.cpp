@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "grey.h"
 #include "random_color.h"
+#include "draw_error.h"
 
 rect stack_back_ground[3];
 text bottom;
@@ -23,7 +24,6 @@ rect_with_text stack_rect_set[stack_max_size];
 text top_txt;
 bool txt_flag;
 
-text error_txt;
 
 int top, stack[stack_max_size];
 
@@ -44,13 +44,6 @@ void stack_init() { // (700 - 900) * (240 - 660) 最大共7（stack_max_size）个bloc
 	top_txt.y = 620;
 
 	txt_flag = 1;
-
-	error_txt.color = RED;
-	strcpy(error_txt.font_name, "Hack");
-	error_txt.font_size = 60;
-	strcpy(error_txt.str, "ERROR!");
-	error_txt.x = 120;
-	error_txt.y = 80;
 
 	stack_back_ground[0].color = BLACK; //左
 	stack_back_ground[0].x = 698;
@@ -185,7 +178,7 @@ void stack_push() {
 	stack_draw();
 
 	if (top == stack_max_size) {
-		text_show(error_txt);
+		draw_error();
 		return;
 	}
 
@@ -248,7 +241,7 @@ void stack_move_up(int loc) { //方格向上移动
 void stack_pop() {
 	stack_draw();
 	if (top == 0) {
-		text_show(error_txt);
+		draw_error();
 		return;
 	}
 
@@ -335,11 +328,9 @@ void stack_main() {
 		if (x > 300 && x < 450) {
 			if (y > 500 && y < 580) {
 				stack_push();
-				stack_UI();
 			}
 			else if (y > 600 && y < 680) {
 				stack_pop();
-				stack_UI();
 			}
 		}
 		else if (y > 20 && y < 70) {

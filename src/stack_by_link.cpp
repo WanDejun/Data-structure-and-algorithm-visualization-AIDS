@@ -5,6 +5,7 @@
 #include "draw_rect.h"
 #include "draw_arrow.h"
 #include "input_box.h"
+#include "draw_error.h"
 
 typedef struct {
 	rect rt; //方格
@@ -159,6 +160,11 @@ void stack_by_link_push() {
 		return;
 	}
 
+	if (stack_by_link_top > stack_by_link_max_size) {
+		draw_error();
+		return;
+	}
+
 	stack_by_link_top_move_back(); //指针后移
 	stack_by_link_top++;
 
@@ -216,6 +222,11 @@ void stack_by_link_disappear() {
 
 void stack_by_link_pop() {
 	stack_by_link_draw();
+
+	if (stack_by_link_top == 0) {
+		draw_error();
+		return;
+	}
 
 	stack_by_link_disappear(); //删除节点
 
@@ -298,11 +309,9 @@ void stack_by_link_main() {
 		if (x > 300 && x < 450) {
 			if (y > 500 && y < 580) {
 				stack_by_link_push();
-				stack_by_link_UI();
 			}
 			else if (y > 600 && y < 680) {
 				stack_by_link_pop();
-				stack_by_link_UI();
 			}
 		}
 		else if (y > 20 && y < 70) {

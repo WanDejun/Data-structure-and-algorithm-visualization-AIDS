@@ -69,16 +69,14 @@ void draw_arrow(arrow t) { // 绘制箭头，颜色由外部控制（用于淡出）
 
 	color_t color_pre = getfillcolor();
 
-	printf("%f\n", theta);
-
 	ege_point pt[6] = {}; // 箭身部分宽度为4px
-	pt[0].x = roundl(x_st - 2 * sin(theta));		//  1---------------4
+	pt[0].x = roundl(x_st - 2 * sin(theta));		//  0---------------3
 	pt[0].y = roundl(y_st + 2 * cos(theta));		//  |				|
 	pt[1].x = roundl(x_st + 2 * sin(theta));		//  |				|
 	pt[1].y = roundl(y_st - 2 * cos(theta));		//  st				ed
 	pt[2].x = roundl(x_ed + 2 * sin(theta));		//  |				|
 	pt[2].y = roundl(y_ed - 2 * cos(theta));		//	|				|
-	pt[3].x = roundl(x_ed - 2 * sin(theta));		//  2---------------3
+	pt[3].x = roundl(x_ed - 2 * sin(theta));		//  1---------------2
 	pt[3].y = roundl(y_ed + 2 * cos(theta));
 
 	ege_fillpoly(4, pt);
