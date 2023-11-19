@@ -40,6 +40,8 @@ color_with_text cycle_queue_node_set[cycle_queue_max_size + 1]; //节点数组
 
 static arrow_with_text tail_p, head_p; //可视化指针
 
+text info[2]; //提示信息（头尾指针的下标） [0]为头，[1]为尾
+
 int tail_loc, head_loc;
 
 void cycle_queue_init() { //初始化
@@ -76,6 +78,16 @@ void cycle_queue_init() { //初始化
 	strcpy(head_p.txt.str, "Head");
 	head_p.r_txt = 340;
 	head_p.visible = 1;
+
+	for (int i = 0; i < 2; i++) { //初始化提示信息
+		info[i].color = BLACK;
+		info[i].font_size = 30;
+		strcpy(info[i].font_name, "Hack");
+		info[i].x = 80;
+		info[i].y = 300 + 30 * i;
+	}
+	strcpy(info[0].str, "Head = 0"); //数字在7号位
+	strcpy(info[1].str, "Tail = 0");
 }
 
 void cycle_queue_draw_tail() { //输出尾指针
@@ -143,6 +155,10 @@ void cycle_queue_draw() { //主输出函数（会清屏）
 			text_show(cycle_queue_node_set[i].txt);
 		}
 	}
+
+	for (int i = 0; i < 2; i++) {
+		text_show(info[i]);
+	}
 }
 
 void cycle_queue_node_appear(int val) { //渐入（没渐起来，ege函数貌似不支持？）
@@ -208,6 +224,9 @@ void cycle_queue_push() { //入队
 	cycle_queue_node_appear(val); //新增节点
 	cycle_queue_tail_move(2 * PI / (cycle_queue_max_size + 1)); //移动指针
 	(tail_loc = tail_loc + 1) %= (cycle_queue_max_size + 1); //指针下标+1取模
+
+	info[1].str[7] = '0' + tail_loc;
+	cycle_queue_draw(); //覆盖绘制一次
 }
 
 void cycle_queue_node_disappear() { //节点图形消失
@@ -240,6 +259,9 @@ void cycle_queue_pop() { //出队
 	cycle_queue_node_disappear();
 	cycle_queue_head_move(2 * PI / (cycle_queue_max_size + 1));
 	(head_loc = head_loc + 1) %= (cycle_queue_max_size + 1);
+
+	info[0].str[7] = '0' + head_loc;
+	cycle_queue_draw(); //覆盖绘制一次
 }
 
 void cycle_queue_UI() { // 不清屏， 覆盖打印 x:(300-450)px y:(400-480, 500-580, 600-680)px
