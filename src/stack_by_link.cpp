@@ -44,7 +44,9 @@ void stack_by_link_init() {
 		stack_by_link_rect_set[i].txt.font_size = 20;
 		stack_by_link_rect_set[i].txt.x = x + text_det_x;
 		stack_by_link_rect_set[i].txt.y = y + text_det_y; //两位数字要在创建节点时后移，以保证居中
-		stack_by_link_rect_set[0].txt.color = BLACK;
+		stack_by_link_rect_set[i].txt.color = BLACK;
+
+		stack_by_link_rect_set[i].visible = 0;
 	}
 
 	stack_by_link_rect_set[0].visible = 1;
