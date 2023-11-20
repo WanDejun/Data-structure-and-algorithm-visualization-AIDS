@@ -61,6 +61,8 @@ void stack_by_link_init() {
 		stack_by_link_arrow_set[i].x_ed = stack_by_link_rect_set[i].rt.x + 10 + stack_by_link_bk_px;
 		stack_by_link_arrow_set[i].y_st = stack_by_link_rect_set[i + 1].rt.y + stack_by_link_bk_px / 2;
 		stack_by_link_arrow_set[i].y_ed = stack_by_link_rect_set[i].rt.y + stack_by_link_bk_px / 2;
+
+		stack_by_link_arrow_set[i].visible = 0;
 	}
 
 	top_text.aw.x_ed = stack_by_link_rect_set[0].rt.x + stack_by_link_bk_px / 2;
