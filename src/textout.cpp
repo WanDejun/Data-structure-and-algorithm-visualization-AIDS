@@ -13,6 +13,15 @@ void text_init() {
 	}
 }
 
+void text_cpy(text* u, text* v) {
+	strcpy((*u).str, (*v).str);
+	(*u).x = (*v).x;
+	(*u).y = (*v).y;
+	(*u).color = (*v).color;
+	(*u).font_size = (*v).font_size;
+	strcpy((*u).font_name, (*v).font_name);
+}
+
 void text_cpy(int u, int v) {
 	strcpy(text_set[u].str, text_set[v].str);
 	text_set[u].x = text_set[v].x;

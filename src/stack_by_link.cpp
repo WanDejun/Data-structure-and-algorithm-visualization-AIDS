@@ -6,18 +6,7 @@
 #include "draw_arrow.h"
 #include "input_box.h"
 #include "draw_error.h"
-
-typedef struct {
-	rect rt; //方格
-	text txt; //文本
-	bool visible;
-} rect_with_text; //方格和字符
-
-typedef struct {
-	arrow aw; // 箭头
-	text txt; //文本
-	bool visible;
-} arrow_with_text; //箭头和字符
+#include "typedef.h"
 
 const int stack_by_link_max_size = 7, stack_by_link_bk_px = 50, text_det_x = 17, text_det_y = 16;
 

@@ -7,15 +7,10 @@
 #include "grey.h"
 #include "random_color.h"
 #include "draw_error.h"
+#include "typedef.h"
 
 rect stack_back_ground[3];
 text bottom;
-
-typedef struct {
-	rect rt; //方格
-	text txt; //文本
-	bool visible;
-} rect_with_text; //方格和字符
 
 const int stack_max_size = 7, bk_x_size = 200, bk_y_size = 60, text_det_y = 20;
 

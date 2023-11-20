@@ -2,12 +2,8 @@
 #include "link.h"
 #include "link_insert_delete.h"
 #include "textout.h"
+#include "typedef.h"
 #include "draw_rect.h"
-
-typedef struct {
-	rect rt; //方格
-	text txt; //文本
-} rect_with_text; //方格和字符
 
 extern bool link_quit_flag;
 

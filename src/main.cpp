@@ -25,7 +25,7 @@ int main()
     draw_error_init();
 
 
-    queue_by_link_main();
+    cycle_queue_main();
 
     //等待用户按键
     getch();

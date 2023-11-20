@@ -3,15 +3,11 @@
 #include <stdlib.h>
 #include "draw_rect.h"
 #include "textout.h"
+#include "typedef.h"
 
 //绘制输入器 （50 - 220） * （400 - 690）
 
 const int box_size = 50, space_size = 10; 
-
-typedef struct {
-	rect rt; //方格
-	text txt; //文本
-} rect_with_text; //方格和字符
 
 rect_with_text rect_set[12]; //12个按键 (0-9, BACK, ENTER)
 rect screen; //回显背景
