@@ -1,7 +1,7 @@
 #include "draw_rect.h"
 #include <graphics.h>
 
-void rect_show(rect rt) {
+void rect_show(rect rt) { //Êä³örect
 	color_t fill_color_pre = getfillcolor();
 	setfillcolor(rt.color);
 

@@ -67,8 +67,6 @@ void draw_arrow(arrow t) { // 绘制箭头，颜色由外部控制（用于淡出）
 
 	double theta = atan2(y_ed - y_st, x_ed - x_st);
 
-	color_t color_pre = getfillcolor();
-
 	ege_point pt[6] = {}; // 箭身部分宽度为4px
 	pt[0].x = roundl(x_st - 2 * sin(theta));		//  0---------------3
 	pt[0].y = roundl(y_st + 2 * cos(theta));		//  |				|
@@ -93,8 +91,6 @@ void draw_arrow(arrow t) { // 绘制箭头，颜色由外部控制（用于淡出）
 	pt[4].x = roundl(pt[5].x + 5 * cos(theta)); pt[4].y = roundl(pt[5].y + 5 * sin(theta));
 
 	ege_fillpoly(6, pt);
-
-	setfillcolor(color_pre);
 }
 
 void arrow_appear(int loc, int x_st, int y_st, int x_ed, int y_ed) { //增加一个箭头到loc位置
