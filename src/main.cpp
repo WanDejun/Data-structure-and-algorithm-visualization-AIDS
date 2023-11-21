@@ -9,6 +9,7 @@
 #include "draw_error.h"
 #include "queue_by_link.h"
 #include "typedef.h"
+#include "heap.h"
 
 rect_with_text key[4][4] = { 0 }; //按键（功能）个数
 
@@ -138,26 +139,28 @@ int main() {
 
     int x, y;
 
-    for (; is_run(); delay_fps(60)) {
-        main_UI();
-        
-        mouse_msg msg = { 0 };
-        //msg.x = msg.y = 0;
+    heap_main();
 
-        //获取鼠标消息，此函数不会等待，运行后会立即返回
-        while (mousemsg()) {
-            msg = getmouse();
-        }
-        flushmouse(); //清空鼠标输入队列
+    //for (; is_run(); delay_fps(60)) {
+    //    main_UI();
+    //    
+    //    mouse_msg msg = { 0 };
+    //    //msg.x = msg.y = 0;
 
-        if (!msg.is_down()) continue;
+    //    //获取鼠标消息，此函数不会等待，运行后会立即返回
+    //    while (mousemsg()) {
+    //        msg = getmouse();
+    //    }
+    //    flushmouse(); //清空鼠标输入队列
 
-        x = msg.x;
-        y = msg.y;
+    //    if (!msg.is_down()) continue;
 
-        trap(x, y);
-        flushmouse(); //清空鼠标输入队列
-    }
+    //    x = msg.x;
+    //    y = msg.y;
+
+    //    trap(x, y);
+    //    flushmouse(); //清空鼠标输入队列
+    //}
 
     //等待用户按键
     getch();

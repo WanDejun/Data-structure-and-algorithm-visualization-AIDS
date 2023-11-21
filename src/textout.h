@@ -16,6 +16,7 @@ typedef struct TEXT {
 extern text text_set[32];
 extern int text_cnt;
 
+int s2i(char* str); 
 void text_init();
 void text_cpy(text* u, text* v);
 void text_cpy(int u, int v);

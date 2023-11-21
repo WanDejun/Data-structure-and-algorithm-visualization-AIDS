@@ -6,6 +6,14 @@ text text_set[32];
 
 int text_cnt;
 
+int s2i(char* str) {
+	int ret = 0;
+	for (int i = 0; str[i] != '\0'; i++) {
+		ret = ret * 10 + str[i] - '0';
+	}
+	return ret;
+}
+
 void text_init() {
 	for (int i = 0; i < 32; i++) {
 		strcpy(text_set[i].str, "");
