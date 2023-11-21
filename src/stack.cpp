@@ -315,6 +315,8 @@ void stack_main() {
 		while (mousemsg()) {
 			msg = getmouse();
 		}
+		flushmouse(); //清空鼠标输入队列
+
 		if (!msg.is_down()) continue;
 
 		x = msg.x;

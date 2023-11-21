@@ -20,6 +20,8 @@ arrow_with_text queue_by_link_head_p, queue_by_link_tail_p;
 
 arrow queue_by_link_arrow_set[queue_by_link_max_size];
 
+text queue_by_link_info;
+
 static int queue_by_link_head_loc, queue_by_link_tail_loc;
 
 void queue_by_link_init() {
@@ -79,7 +81,7 @@ void queue_by_link_init() {
 	strcpy(queue_by_link_head_p.txt.font_name, "Hack");
 	queue_by_link_head_p.txt.font_size = 30;
 	strcpy(queue_by_link_head_p.txt.str, "Head");
-	queue_by_link_head_p.txt.x = queue_by_link_head_p.aw.x_st - 30;
+	queue_by_link_head_p.txt.x = queue_by_link_head_p.aw.x_st - 35;
 	queue_by_link_head_p.txt.y = queue_by_link_head_p.aw.y_st - 35;
 
 	//初始化tail指针
@@ -93,8 +95,16 @@ void queue_by_link_init() {
 	strcpy(queue_by_link_tail_p.txt.font_name, "Hack");
 	queue_by_link_tail_p.txt.font_size = 30;
 	strcpy(queue_by_link_tail_p.txt.str, "Tail");
-	queue_by_link_tail_p.txt.x = queue_by_link_tail_p.aw.x_st - 30;
-	queue_by_link_tail_p.txt.y = queue_by_link_tail_p.aw.y_st + 35;
+	queue_by_link_tail_p.txt.x = queue_by_link_tail_p.aw.x_st - 35;
+	queue_by_link_tail_p.txt.y = queue_by_link_tail_p.aw.y_st + 4;
+
+	//info初始化
+	queue_by_link_info.color = BLACK;
+	strcpy(queue_by_link_info.font_name, "Hack");
+	queue_by_link_info.font_size = 30;
+	queue_by_link_info.x = 80;
+	queue_by_link_info.y = 80;
+	strcpy(queue_by_link_info.str, "");
 }
 
 void queue_by_link_draw() {
@@ -126,6 +136,8 @@ void queue_by_link_draw() {
 		text_show(queue_by_link_tail_p.txt);
 		draw_arrow(queue_by_link_tail_p.aw);
 	}
+
+	text_show(queue_by_link_info);
 }
 
 void queue_by_link_null_back() {
@@ -221,8 +233,16 @@ void queue_by_link_push() {
 	}
 
 	queue_by_link_null_back();
+
+	if (queue_by_link_tail_loc > 0) strcpy(queue_by_link_info.str, "Tail->next = malloc(sizeof node); Tail->next->next = NULL;");
+	else strcpy(queue_by_link_info.str, "Head = Tail = malloc(sizeof node); Tail->next = NULL;");
+
 	queue_by_link_node_appear(val);
-	if (queue_by_link_tail_loc != 0) queue_by_link_tail_back();
+
+	if (queue_by_link_tail_loc != 0) {
+		strcpy(queue_by_link_info.str, "Tail = Tail->next;");
+		queue_by_link_tail_back();
+	}
 	queue_by_link_tail_loc++;
 }
 
@@ -252,9 +272,9 @@ void queue_by_link_node_disappear() {
 }
 
 void queue_by_link_move_front() {
-	int dx = 1;
+	int dx = 2;
 
-	for (int i = 0; i < 100; i++, delay_fps(60)) {
+	for (int i = 0; i < 50; i++, delay_fps(60)) {
 		for (int i = 0; i < queue_by_link_tail_loc - 1; i++) {
 			queue_by_link_arrow_set[i].x_ed -= dx;
 			queue_by_link_arrow_set[i].x_st -= dx;
@@ -266,14 +286,15 @@ void queue_by_link_move_front() {
 
 		null_node.rt.x -= dx;
 		null_node.txt.x -= dx; 
-		
-		queue_by_link_head_p.aw.x_st -= dx;
-		queue_by_link_head_p.aw.x_ed -= dx;
-		queue_by_link_head_p.txt.x -= dx;
+		if (queue_by_link_tail_loc > 1) {
+			queue_by_link_head_p.aw.x_st -= dx;
+			queue_by_link_head_p.aw.x_ed -= dx;
+			queue_by_link_head_p.txt.x -= dx;
 
-		queue_by_link_tail_p.aw.x_st -= dx;
-		queue_by_link_tail_p.aw.x_ed -= dx;
-		queue_by_link_tail_p.txt.x -= dx;
+			queue_by_link_tail_p.aw.x_st -= dx;
+			queue_by_link_tail_p.aw.x_ed -= dx;
+			queue_by_link_tail_p.txt.x -= dx;
+		}
 
 		queue_by_link_draw();
 	}
@@ -287,18 +308,25 @@ void queue_by_link_pop() {
 		return;
 	}
 
-	queue_by_link_node_disappear();
+	strcpy(queue_by_link_info.str, "Head = Head->next;");
+
 	if (queue_by_link_tail_loc != 1) queue_by_link_head_back();
+
+	strcpy(queue_by_link_info.str, "free();");
+
+	queue_by_link_node_disappear();
 
 	for (int i = 0; i < queue_by_link_tail_loc - 1; i++) { // 节点前移
 		queue_by_link_node_set[i].rt.x = queue_by_link_node_set[i + 1].rt.x;
 		queue_by_link_node_set[i].rt.color = queue_by_link_node_set[i + 1].rt.color;
+		queue_by_link_node_set[i].visible = queue_by_link_node_set[i + 1].visible;
 
 		text_cpy(&queue_by_link_node_set[i].txt, &queue_by_link_node_set[i + 1].txt);
 	}
 
 	queue_by_link_node_set[queue_by_link_tail_loc - 1].visible = 0; //最后一个节点重置
-	if (queue_by_link_node_set[queue_by_link_tail_loc - 1].txt.str[1] != '\0') queue_by_link_node_set[queue_by_link_tail_loc - 1].txt.x -= 5;
+	if (queue_by_link_node_set[queue_by_link_tail_loc - 1].txt.str[1] != '\0')
+		queue_by_link_node_set[queue_by_link_tail_loc - 1].txt.x += 5;
 
 	for (int i = 0; i < queue_by_link_tail_loc - 1; i++) { //箭头前移
 		queue_by_link_arrow_set[i].x_st += 100;
@@ -313,13 +341,95 @@ void queue_by_link_pop() {
 	queue_by_link_tail_loc--;
 }
 
+void queue_by_link_UI() {
+	rect_with_text key[3] = { 0 };
+	rect_with_text quit = { 0 };
+
+	//初始化两个按键和输出提示
+	for (int i = 0; i < 3; i++) {
+		key[i].rt.x = 300; //x:300
+		key[i].rt.y = 400 + i * 100; //y: 400 - 
+		key[i].rt.x_size = 150;
+		key[i].rt.y_size = 80;
+
+		key[i].txt.color = EGEARGB(0xff, 0x00, 0x00, 0x00);
+		strcpy(key[i].txt.font_name, "Hack");
+		key[i].txt.font_size = 35; //35号字体
+		key[i].txt.x = key[i].rt.x + 32;
+		key[i].txt.y = key[i].rt.y + 24;
+	}
+	key[2].txt.x += 10;
+
+	key[0].rt.color = EGEARGB(0, 0, 0, 0); //透明背景
+	key[1].rt.color = EGEARGB(128, 80, 200, 80); //绿
+	key[2].rt.color = EGEARGB(128, 32, 128, 192); //蓝
+
+	key[0].txt.y = 470;
+	key[0].txt.x = 300;
+	key[0].txt.font_size = 25;
+
+	strcpy(key[0].txt.str, "NEXT STEP:");
+	strcpy(key[1].txt.str, "PUSH");
+	strcpy(key[2].txt.str, "POP");
+
+
+	//初始化quit
+	strcpy(quit.txt.str, "QUIT");
+	quit.txt.color = EGEARGB(255, 0x200, 0x200, 0x200);
+	quit.txt.font_size = 22;
+	strcpy(quit.txt.font_name, "Hack");
+	quit.txt.x = 1180 + 13;
+	quit.txt.y = 20 + 18;
+
+	quit.rt.color = EGEARGB(255, 188, 36, 36);
+	quit.rt.x = 1180;
+	quit.rt.y = 20;
+	quit.rt.x_size = 80;
+	quit.rt.y_size = 50;
+
+	//输出
+	for (int i = 0; i < 3; i++) {
+		rect_show(key[i].rt);
+		text_show(key[i].txt);
+	}
+	rect_show(quit.rt);
+	text_show(quit.txt);
+}
+
 void queue_by_link_main() {
 	queue_by_link_init();
 	queue_by_link_draw();
 
-	queue_by_link_push();
-	queue_by_link_push();
-	queue_by_link_push();
-	queue_by_link_pop();
-	queue_by_link_pop();
+	int x, y;
+	mouse_msg msg = { 0 };
+
+	for (; is_run() && !queue_by_link_quit_flag; delay_fps(60)) {
+		queue_by_link_UI();
+
+		//获取鼠标消息，此函数不会等待，运行后会立即返回
+		while (mousemsg()) {
+			msg = getmouse();
+		}
+		flushmouse(); //清空鼠标输入队列
+
+		if (!msg.is_down()) continue;
+
+		x = msg.x;
+		y = msg.y;
+
+		if (x > 300 && x < 450) {
+			if (y > 500 && y < 580) {
+				queue_by_link_push();
+			}
+			else if (y > 600 && y < 680) {
+				queue_by_link_pop();
+			}
+		}
+		else if (y > 20 && y < 70) {
+			if (x > 1180 && x < 1260) {
+				queue_by_link_quit_flag = 1;
+			}
+		}
+	}
+
 }
