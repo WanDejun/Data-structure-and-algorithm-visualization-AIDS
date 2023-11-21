@@ -12,36 +12,39 @@ bool queue_by_link_quit_flag;
 
 const int queue_by_link_max_size = 7, text_det_x = 17, text_det_y = 16, queue_by_link_bk_size = 50; //间距50px
 
-rect_with_text queue_by_link_node_set[queue_by_link_max_size + 1]; 
+rect_with_text queue_by_link_node_set[queue_by_link_max_size + 1]; //保存节点信息，+ 1是为了在节点在内存空间中前移时方便用+1这个多余节点的信息重置前一个节点
 
 rect_with_text null_node; //null节点
 
 arrow_with_text queue_by_link_head_p, queue_by_link_tail_p;
 
-arrow queue_by_link_arrow_set[queue_by_link_max_size];
+arrow queue_by_link_arrow_set[queue_by_link_max_size]; //保存箭头信息
 
 text queue_by_link_info;
 
 static int queue_by_link_head_loc, queue_by_link_tail_loc;
 
-void queue_by_link_init() {
-	queue_by_link_quit_flag = 0;
+void queue_by_link_init() { //初始化
+	queue_by_link_quit_flag = 0; //结束标识符置0
 
 	queue_by_link_head_loc = queue_by_link_tail_loc = 0;
 
 	for (int i = 0, x = 350, y = 335; i <= queue_by_link_max_size; i++, x += 2 * queue_by_link_bk_size) { //x起始坐标350
+		//节点方格初始化
 		queue_by_link_node_set[i].rt.color = EGEARGB(0xff, 0x66, 0xcc, 0xff);
 		queue_by_link_node_set[i].rt.x = x;
 		queue_by_link_node_set[i].rt.x_size = queue_by_link_bk_size;
 		queue_by_link_node_set[i].rt.y = y;
 		queue_by_link_node_set[i].rt.y_size = queue_by_link_bk_size;
 
+		//节点文本初始化
 		queue_by_link_node_set[i].txt.color = BLACK;
 		queue_by_link_node_set[i].txt.font_size = 20;
 		strcpy(queue_by_link_node_set[i].txt.font_name, "Hack");
 		queue_by_link_node_set[i].txt.x = x + text_det_x;
 		queue_by_link_node_set[i].txt.y = y + text_det_y;
 
+		//节点可见标识置0
 		queue_by_link_node_set[i].visible = 0;
 	}
 
@@ -107,28 +110,28 @@ void queue_by_link_init() {
 	strcpy(queue_by_link_info.str, "");
 }
 
-void queue_by_link_draw() {
-	cleardevice();
+void queue_by_link_draw() { //主绘图函数，包含清屏
+	cleardevice(); //清屏
 
-	rect_show(null_node.rt);
+	rect_show(null_node.rt); //绘制null节点
 	text_show(null_node.txt);
 
-	for (int i = 0; i <= queue_by_link_max_size; i++) {
-		if (queue_by_link_node_set[i].visible) {
+	for (int i = 0; i <= queue_by_link_max_size; i++) { //绘制节点
+		if (queue_by_link_node_set[i].visible) { //可见节点
 			rect_show(queue_by_link_node_set[i].rt);
 			text_show(queue_by_link_node_set[i].txt);
 		}
 	}
 
-	setfillcolor(BLACK);
+	setfillcolor(BLACK); //设置箭头颜色
 
-	for (int i = 0; i < queue_by_link_max_size; i++) {
+	for (int i = 0; i < queue_by_link_max_size; i++) { //绘制箭头
 		if (queue_by_link_arrow_set[i].visible) {
 			draw_arrow(queue_by_link_arrow_set[i]);
 		}
 	}
 
-	if (queue_by_link_head_p.visible) {
+	if (queue_by_link_head_p.visible) { //绘制头尾指针
 		text_show(queue_by_link_head_p.txt);
 		draw_arrow(queue_by_link_head_p.aw);
 	}
@@ -137,11 +140,11 @@ void queue_by_link_draw() {
 		draw_arrow(queue_by_link_tail_p.aw);
 	}
 
-	text_show(queue_by_link_info);
+	text_show(queue_by_link_info); //输出提示信息
 }
 
-void queue_by_link_null_back() {
-	double rt_x = null_node.rt.x, txt_x = null_node.txt.x, dx = static_cast<double>(100) / 60 + 1e-6;
+void queue_by_link_null_back() {//null节点后移
+	double rt_x = null_node.rt.x, txt_x = null_node.txt.x, dx = static_cast<double>(100) / 60 + 1e-6; //节点位置， dx:移动速度
 
 	for (int i = 0; i < 60; i++, delay_fps(60)) {
 		rt_x += dx;
@@ -154,14 +157,14 @@ void queue_by_link_null_back() {
 	}
 }
 
-void queue_by_link_node_appear(int val) {
-	double a = 0, da = static_cast<double>(255) / 30 + 1e-6;
+void queue_by_link_node_appear(int val) { //产生新节点
+	double a = 0, da = static_cast<double>(255) / 30 + 1e-6; //透明度即透明度变化速度
 	int i_a = 0;
 
-	sprintf(queue_by_link_node_set[queue_by_link_tail_loc].txt.str, "%d", val);
+	sprintf(queue_by_link_node_set[queue_by_link_tail_loc].txt.str, "%d", val); //txt.val值修改
 	if (val >= 10) queue_by_link_node_set[queue_by_link_tail_loc].txt.x -= 5;
 
-	queue_by_link_node_set[queue_by_link_tail_loc].visible = 1;
+	queue_by_link_node_set[queue_by_link_tail_loc].visible = 1; //新节点调为可见
 
 	for (int i = 0; i < 30; i++, delay_fps(60)) {
 		a += da;
@@ -191,7 +194,7 @@ void queue_by_link_node_appear(int val) {
 	queue_by_link_arrow_set[queue_by_link_tail_loc].visible = 1;
 }
 
-void queue_by_link_tail_back() {
+void queue_by_link_tail_back() { //尾指针后移
 	double aw_x = queue_by_link_tail_p.aw.x_st, txt_x = queue_by_link_tail_p.txt.x, dx = static_cast<double>(100) / 60 + 1e-6;
 
 	for (int i = 0; i < 60; i++, delay_fps(60)) {
@@ -204,7 +207,7 @@ void queue_by_link_tail_back() {
 	}
 }
 
-void queue_by_link_head_back() {
+void queue_by_link_head_back() {//头指针后移
 	double aw_x = queue_by_link_head_p.aw.x_st, txt_x = queue_by_link_head_p.txt.x, dx = static_cast<double>(100) / 60 + 1e-6;
 
 	for (int i = 0; i < 60; i++, delay_fps(60)) {
@@ -217,29 +220,30 @@ void queue_by_link_head_back() {
 	}
 }
 
-void queue_by_link_push() {
+void queue_by_link_push() { //入队
 	queue_by_link_draw();
 
-	if (queue_by_link_tail_loc == queue_by_link_max_size) {
+	if (queue_by_link_tail_loc == queue_by_link_max_size) { //超出上限，输出错误信息
 		draw_error();
 		return;
 	}
 
 	int val = input_box_get();
 
-	if (val == -1) {
+	if (val == -1) { //退出键被按下
 		queue_by_link_quit_flag = 1;
 		return;
 	}
 
-	queue_by_link_null_back();
+	queue_by_link_null_back(); //null节点后移
 
+	//提示信息，产生新节点，新节点初始化
 	if (queue_by_link_tail_loc > 0) strcpy(queue_by_link_info.str, "Tail->next = malloc(sizeof node); Tail->next->next = NULL;");
 	else strcpy(queue_by_link_info.str, "Head = Tail = malloc(sizeof node); Tail->next = NULL;");
 
 	queue_by_link_node_appear(val);
 
-	if (queue_by_link_tail_loc != 0) {
+	if (queue_by_link_tail_loc != 0) { //入队前队列不为空，尾指针后移
 		strcpy(queue_by_link_info.str, "Tail = Tail->next;");
 		queue_by_link_tail_back();
 	}
@@ -247,16 +251,16 @@ void queue_by_link_push() {
 }
 
 void queue_by_link_node_disappear() {
-	double a = 255, da = static_cast<double>(255) / 30 + 1e-6;
+	double a = 255, da = static_cast<double>(255) / 30 + 1e-6; //a为透明度 da为淡化速录
 	int i_a = 0;
 
 	queue_by_link_arrow_set[queue_by_link_head_loc].visible = 0;
 
-	for (int i = 0; i < 30; i++, delay_fps(60)) {
+	for (int i = 0; i < 30; i++, delay_fps(60)) { //逐帧循环
 		a -= da;
 		i_a = a;
 
-		queue_by_link_node_set[queue_by_link_head_loc].rt.color %= (1 << 24);
+		queue_by_link_node_set[queue_by_link_head_loc].rt.color %= (1 << 24); //重置透明度值
 		queue_by_link_node_set[queue_by_link_head_loc].rt.color |= (i_a << 24);
 
 		queue_by_link_node_set[queue_by_link_head_loc].txt.color %= (1 << 24);
@@ -264,7 +268,7 @@ void queue_by_link_node_disappear() {
 
 		queue_by_link_draw();
 
-		setfillcolor(EGEARGB(i_a, 0x00, 0x00, 0x00));
+		setfillcolor(EGEARGB(i_a, 0x00, 0x00, 0x00)); //重置箭头透明度
 		draw_arrow(queue_by_link_arrow_set[queue_by_link_head_loc]);
 	}
 
@@ -272,9 +276,9 @@ void queue_by_link_node_disappear() {
 }
 
 void queue_by_link_move_front() {
-	int dx = 2;
+	int dx = 2; //位移速度
 
-	for (int i = 0; i < 50; i++, delay_fps(60)) {
+	for (int i = 0; i < 50; i++, delay_fps(60)) { //逐帧循环
 		for (int i = 0; i < queue_by_link_tail_loc - 1; i++) {
 			queue_by_link_arrow_set[i].x_ed -= dx;
 			queue_by_link_arrow_set[i].x_st -= dx;
@@ -284,44 +288,44 @@ void queue_by_link_move_front() {
 		}
 
 
-		null_node.rt.x -= dx;
+		null_node.rt.x -= dx; //null节点前移
 		null_node.txt.x -= dx; 
-		if (queue_by_link_tail_loc > 1) {
-			queue_by_link_head_p.aw.x_st -= dx;
+
+		if (queue_by_link_tail_loc > 1) { //队列不为空时，头尾指针前移
+			queue_by_link_head_p.aw.x_st -= dx; //头
 			queue_by_link_head_p.aw.x_ed -= dx;
 			queue_by_link_head_p.txt.x -= dx;
 
-			queue_by_link_tail_p.aw.x_st -= dx;
+			queue_by_link_tail_p.aw.x_st -= dx; //尾
 			queue_by_link_tail_p.aw.x_ed -= dx;
 			queue_by_link_tail_p.txt.x -= dx;
 		}
 
-		queue_by_link_draw();
+		queue_by_link_draw(); //每帧绘图
 	}
 }
 
-void queue_by_link_pop() {
+void queue_by_link_pop() { //出队
 	queue_by_link_draw();
 
-	if (queue_by_link_tail_loc <= 0) {
+	if (queue_by_link_tail_loc <= 0) { //尾指针为零表示队列中无元素，输出error错误信息
 		draw_error();
 		return;
 	}
 
-	strcpy(queue_by_link_info.str, "Head = Head->next;");
+	strcpy(queue_by_link_info.str, "Head = Head->next;"); //提示信息输出，头指针后移
 
-	if (queue_by_link_tail_loc != 1) queue_by_link_head_back();
+	if (queue_by_link_tail_loc != 1) queue_by_link_head_back(); //原本队列不为空时，头指针后移
 
-	strcpy(queue_by_link_info.str, "free();");
+	strcpy(queue_by_link_info.str, "free();"); //输出提示信息，释放原来的节点
 
 	queue_by_link_node_disappear();
 
-	for (int i = 0; i < queue_by_link_tail_loc - 1; i++) { // 节点前移
+	for (int i = 0; i < queue_by_link_tail_loc - 1; i++) { // 节点在内存空间中前移
 		queue_by_link_node_set[i].rt.x = queue_by_link_node_set[i + 1].rt.x;
-		queue_by_link_node_set[i].rt.color = queue_by_link_node_set[i + 1].rt.color;
 		queue_by_link_node_set[i].visible = queue_by_link_node_set[i + 1].visible;
 
-		text_cpy(&queue_by_link_node_set[i].txt, &queue_by_link_node_set[i + 1].txt);
+		text_cpy(&queue_by_link_node_set[i].txt, &queue_by_link_node_set[i + 1].txt); //节点文本信息复制
 	}
 
 	queue_by_link_node_set[queue_by_link_tail_loc - 1].visible = 0; //最后一个节点重置
@@ -334,9 +338,9 @@ void queue_by_link_pop() {
 		queue_by_link_arrow_set[i].visible = queue_by_link_arrow_set[i + 1].visible;
 	}
 
-	queue_by_link_arrow_set[queue_by_link_tail_loc - 1].visible = 0;
+	queue_by_link_arrow_set[queue_by_link_tail_loc - 1].visible = 0; //最后一个箭头重置
 
-	queue_by_link_move_front();
+	queue_by_link_move_front(); //整体前移动画
 
 	queue_by_link_tail_loc--;
 }
