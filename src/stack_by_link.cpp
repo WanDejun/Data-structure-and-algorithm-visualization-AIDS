@@ -144,15 +144,15 @@ void stack_by_link_appear(int val) {
 void stack_by_link_push() {
 	stack_by_link_draw();
 
+	if (stack_by_link_top == stack_by_link_max_size) {
+		draw_error();
+		return;
+	}
+
 	int val = input_box_get(); //»ñÈ¡ÊäÈë
 
 	if (val == -1) { //ÅÐ¶Ïquit
 		stack_by_link_quit_flag = 1;
-		return;
-	}
-
-	if (stack_by_link_top > stack_by_link_max_size) {
-		draw_error();
 		return;
 	}
 
