@@ -144,20 +144,23 @@ int input_box_get() { //获取输入, 返回输入值，若输入quit返回-1，目前只写了鼠标点
 	input_num[0].str[0] = input_num[1].str[0] = '0';
 
 	int x, y, pre_n = -1;
-	mouse_msg msg = { 0 };
 	double time_pre = fclock(), time;
-	double det_time = 0.1;
+	double det_time = 0.2;
 
 	input_box_show();
 
 	for (; is_run(); delay_fps(60)) {
 		input_box_flush();
 
+		mouse_msg msg = { 0 };
+
 		//获取鼠标消息，此函数不会等待，运行后会立即返回
 		while (mousemsg()) {
 			msg = getmouse();
 		}
-		if (!msg.is_down()) continue;
+		if (!msg.is_left()) continue;
+
+		flushmouse();
 
 		time = fclock(); //记录时间， 防止同一个键在相邻两帧均被按下而被判成两次点击
 
