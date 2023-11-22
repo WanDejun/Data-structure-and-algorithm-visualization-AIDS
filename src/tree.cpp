@@ -1,9 +1,11 @@
+
 #include "tree_demo.h"
 #include <graphics.h>
 #include <math.h>
+#include <stdio.h>
 #include "typedef.h"
 
-static const int max_size = 31, det_x = 6, det_y = 12, x_space = 80, y_space = 80, x_mid = 640;
+static const int max_size = 15, det_x = 5, det_y = 8, x_space = 100, y_space = 80, x_mid = 640;
 
 static cycle_with_text node_set[max_size + 2];
 
@@ -31,7 +33,7 @@ static void init() {
 
 		node_set[i].txt.color = BLACK;
 		strcpy(node_set[i].txt.font_name, FONT);
-		node_set[i].txt.font_size = 20;
+		node_set[i].txt.font_size = 15;
 
 		node_set[i].visible = 0;
 	}
@@ -65,7 +67,7 @@ static void draw() {
 	}
 
 	setfillcolor(BLACK);
-	for (int i = 1; i <= max_size; i++) {
+	for (int i = 2; i <= max_size; i++) {
 		if (tree_arrow_set[i].visible) {
 			draw_arrow(tree_arrow_set[i]);
 		}
@@ -92,6 +94,12 @@ static void appear() {
 
 	node_set[size].visible = 1;
 
+	sprintf(node_set[size].txt.str, "%d", rand() % 100);
+
+	node_set[size].txt.y = node_set[size].cyc.y - det_y;
+	node_set[size].txt.x = node_set[size].cyc.x - det_x;
+	if (node_set[size].txt.str[1] != '\0') node_set[size].txt.x -= 4;
+
 	int f = 30;
 	double a = 0, da = 255.0 / f;
 
@@ -106,8 +114,10 @@ static void appear() {
 
 		draw();
 
-		setfillcolor(EGEACOLOR(int(a), BLACK));
-		draw_arrow(tree_arrow_set[size]);
+		if (size != 1) {
+			setfillcolor(EGEACOLOR(int(a), BLACK));
+			draw_arrow(tree_arrow_set[size]);
+		}
 	}
 	tree_arrow_set[size].visible = 1;
 }
@@ -159,6 +169,10 @@ static void stretch() {
 				tree_arrow_set[j].x_st = x_arr[j >> 1] - 15;
 				tree_arrow_set[j].x_ed = x_arr[j] + 20;
 			}
+
+			node_set[j].txt.y = node_set[j].cyc.y - det_y;
+			node_set[j].txt.x = node_set[j].cyc.x - det_x;
+			if (node_set[j].txt.str[1] != '\0') node_set[j].txt.x -= 4;
 		}
 
 		draw();
@@ -176,6 +190,10 @@ static void stretch() {
 				tree_arrow_set[loc].x_st = node_set[loc >> 1].cyc.x - 15;
 				tree_arrow_set[loc].x_ed = node_set[loc].cyc.x + 20;
 			}
+
+			node_set[loc].txt.y = node_set[loc].cyc.y - det_y;
+			node_set[loc].txt.x = node_set[loc].cyc.x - det_x;
+			if (node_set[loc].txt.str[1] != '\0') node_set[loc].txt.x -= 4;
 		}
 	}
 	draw();
@@ -195,7 +213,7 @@ void tree_main() {
 	init();
 	draw();
 
-	for (int i = 0; i < 31; i++) {
+	for (int i = 0; i < max_size; i++) {
 		insert();
 	}
 }

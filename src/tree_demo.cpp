@@ -3,7 +3,7 @@
 #include <math.h>
 #include "typedef.h"
 
-static const int max_size = 15, det_x = 6, det_y = 12, x_space = 100, y_space = 80, x_mid = 640;
+static const int max_size = 31, det_x = 6, det_y = 12, x_space = 80, y_space = 80, x_mid = 640;
 
 static cycle_with_text node_set[max_size + 2];
 
@@ -106,8 +106,10 @@ static void appear() {
 
 		draw();
 
-		setfillcolor(EGEACOLOR(int(a), BLACK));
-		draw_arrow(tree_arrow_set[size]);
+		if (size != 1) {
+			setfillcolor(EGEACOLOR(int(a), BLACK));
+			draw_arrow(tree_arrow_set[size]);
+		}
 	}
 	tree_arrow_set[size].visible = 1;
 }
