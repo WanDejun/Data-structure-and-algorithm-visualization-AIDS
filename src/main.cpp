@@ -50,7 +50,7 @@ void init() {
 
     strcpy(key[1][0].txt.str, "");
     strcpy(key[1][1].txt.str, "");
-    strcpy(key[1][2].txt.str, "");
+    strcpy(key[1][2].txt.str, "Heap: \n(unique queue)");
     strcpy(key[1][3].txt.str, "Stack: \nList Inplamentation");
 
     strcpy(key[2][0].txt.str, "");
@@ -62,6 +62,13 @@ void init() {
     strcpy(key[3][1].txt.str, "");
     strcpy(key[3][2].txt.str, "");
     strcpy(key[3][3].txt.str, "Queue: \nList Inplamentation");
+
+    title.color = BLUE;
+    strcpy(title.font_name, FONT);
+    title.font_size = 60;
+    strcpy(title.str, "数据结构与算法可视化辅助程序");
+    title.x = 220;
+    title.y = 150;
 }
 
 void main_UI() { //简易版UI
@@ -73,6 +80,8 @@ void main_UI() { //简易版UI
             text_show(key[i][j].txt);
         }
     }
+
+    text_show(title);
 }
 
 void trap(int x, int y) {
@@ -109,7 +118,7 @@ void trap(int x, int y) {
             link_main();
         }
         else if (y > 410 && y < 470) {
-
+            heap_main();
         }
         else if (y > 500 && y < 560) {
 
@@ -139,28 +148,26 @@ int main() {
 
     int x, y;
 
-    heap_main();
+    for (; is_run(); delay_fps(60)) {
+        main_UI();
+        
+        mouse_msg msg = { 0 };
+        //msg.x = msg.y = 0;
 
-    //for (; is_run(); delay_fps(60)) {
-    //    main_UI();
-    //    
-    //    mouse_msg msg = { 0 };
-    //    //msg.x = msg.y = 0;
+        //获取鼠标消息，此函数不会等待，运行后会立即返回
+        while (mousemsg()) {
+            msg = getmouse();
+        }
+        flushmouse(); //清空鼠标输入队列
 
-    //    //获取鼠标消息，此函数不会等待，运行后会立即返回
-    //    while (mousemsg()) {
-    //        msg = getmouse();
-    //    }
-    //    flushmouse(); //清空鼠标输入队列
+        if (!msg.is_down()) continue;
 
-    //    if (!msg.is_down()) continue;
+        x = msg.x;
+        y = msg.y;
 
-    //    x = msg.x;
-    //    y = msg.y;
-
-    //    trap(x, y);
-    //    flushmouse(); //清空鼠标输入队列
-    //}
+        trap(x, y);
+        flushmouse(); //清空鼠标输入队列
+    }
 
     //等待用户按键
     getch();
