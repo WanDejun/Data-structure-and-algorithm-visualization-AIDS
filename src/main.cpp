@@ -10,6 +10,8 @@
 #include "queue_by_link.h"
 #include "typedef.h"
 #include "heap.h"
+#include "tree.h"
+#include "tree_demo.h"
 
 rect_with_text key[4][4] = { 0 }; //按键（功能）个数
 
@@ -50,7 +52,7 @@ void init() {
 
     strcpy(key[1][0].txt.str, "");
     strcpy(key[1][1].txt.str, "");
-    strcpy(key[1][2].txt.str, "Heap: \n(unique queue)");
+    strcpy(key[1][2].txt.str, "Heap: \n(priority queue)");
     strcpy(key[1][3].txt.str, "Stack: \nList Inplamentation");
 
     strcpy(key[2][0].txt.str, "");
@@ -146,28 +148,30 @@ void trap(int x, int y) {
 int main() {
     init();
 
-    int x, y;
+    tree_demo_main();
 
-    for (; is_run(); delay_fps(60)) {
-        main_UI();
-        
-        mouse_msg msg = { 0 };
-        //msg.x = msg.y = 0;
+    //int x, y;
 
-        //获取鼠标消息，此函数不会等待，运行后会立即返回
-        while (mousemsg()) {
-            msg = getmouse();
-        }
-        flushmouse(); //清空鼠标输入队列
+    //for (; is_run(); delay_fps(60)) {
+    //    main_UI();
+    //    
+    //    mouse_msg msg = { 0 };
+    //    //msg.x = msg.y = 0;
 
-        if (!msg.is_down()) continue;
+    //    //获取鼠标消息，此函数不会等待，运行后会立即返回
+    //    while (mousemsg()) {
+    //        msg = getmouse();
+    //    }
+    //    flushmouse(); //清空鼠标输入队列
 
-        x = msg.x;
-        y = msg.y;
+    //    if (!msg.is_down()) continue;
 
-        trap(x, y);
-        flushmouse(); //清空鼠标输入队列
-    }
+    //    x = msg.x;
+    //    y = msg.y;
+
+    //    trap(x, y);
+    //    flushmouse(); //清空鼠标输入队列
+    //}
 
     //等待用户按键
     getch();
