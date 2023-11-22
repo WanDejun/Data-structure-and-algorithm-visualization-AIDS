@@ -325,7 +325,7 @@ void queue_by_link_pop() { //出队
 		queue_by_link_node_set[i].rt.x = queue_by_link_node_set[i + 1].rt.x;
 		queue_by_link_node_set[i].visible = queue_by_link_node_set[i + 1].visible;
 
-		text_cpy(&queue_by_link_node_set[i].txt, &queue_by_link_node_set[i + 1].txt); //节点文本信息复制
+		text_cpy(&queue_by_link_node_set[i].txt, queue_by_link_node_set[i + 1].txt); //节点文本信息复制
 	}
 
 	queue_by_link_node_set[queue_by_link_tail_loc - 1].visible = 0; //最后一个节点重置
