@@ -18,7 +18,7 @@ extern int text_cnt;
 
 int s2i(char* str); 
 void text_init();
-void text_cpy(text* u, text* v);
+void text_cpy(text* u, text v);
 void text_cpy(int u, int v);
 void text_update(int loc, char str[], int x, int y, color_t color, int font_size, char font_name[]);
 void text_show(text txt);

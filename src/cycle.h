@@ -11,6 +11,6 @@ typedef  struct {
 
 void cycle_show(cycle cyc);
 
-void cycle_cpy(cycle cyc1, const cycle cyc2);
+void cycle_cpy(cycle *cyc1, const cycle cyc2);
 
 #endif // !CYCLE_H
