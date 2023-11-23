@@ -34,3 +34,5 @@ Data structure and algorithm visualization AIDS.*
 *.out
 *.app
 *.opendb
+
+!Data structure and algorithm visualization AIDS.exe
