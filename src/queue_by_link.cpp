@@ -323,6 +323,7 @@ void queue_by_link_pop() { //出队
 
 	for (int i = 0; i < queue_by_link_tail_loc - 1; i++) { // 节点在内存空间中前移
 		queue_by_link_node_set[i].rt.x = queue_by_link_node_set[i + 1].rt.x;
+		queue_by_link_node_set[i].rt.color = queue_by_link_node_set[i + 1].rt.color;
 		queue_by_link_node_set[i].visible = queue_by_link_node_set[i + 1].visible;
 
 		text_cpy(&queue_by_link_node_set[i].txt, queue_by_link_node_set[i + 1].txt); //节点文本信息复制
