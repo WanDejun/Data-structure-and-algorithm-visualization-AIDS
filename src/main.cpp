@@ -57,12 +57,12 @@ void init() {
 
     strcpy(key[2][0].txt.str, "");
     strcpy(key[2][1].txt.str, "");
-    strcpy(key[2][2].txt.str, "");
+    strcpy(key[2][2].txt.str, "Tree: \ntraversal");
     strcpy(key[2][3].txt.str, "Queue(cycle): \nArray Inplamentation");
 
     strcpy(key[3][0].txt.str, "");
     strcpy(key[3][1].txt.str, "");
-    strcpy(key[3][2].txt.str, "");
+    strcpy(key[3][2].txt.str, "Tree demo: \n(just a demo)");
     strcpy(key[3][3].txt.str, "Queue: \nList Inplamentation");
 
     title.color = BLUE;
@@ -123,10 +123,10 @@ void trap(int x, int y) {
             heap_main();
         }
         else if (y > 500 && y < 560) {
-
+            tree_main();
         }
         else if (y > 590 && y < 650) {
-        
+            tree_demo_main();
         }
     }
     else if (x > 930 && x < 1030) {
@@ -148,30 +148,28 @@ void trap(int x, int y) {
 int main() {
     init();
 
-    tree_demo_main();
+    int x, y;
 
-    //int x, y;
+    for (; is_run(); delay_fps(60)) {
+        main_UI();
+        
+        mouse_msg msg = { 0 };
+        //msg.x = msg.y = 0;
 
-    //for (; is_run(); delay_fps(60)) {
-    //    main_UI();
-    //    
-    //    mouse_msg msg = { 0 };
-    //    //msg.x = msg.y = 0;
+        //获取鼠标消息，此函数不会等待，运行后会立即返回
+        while (mousemsg()) {
+            msg = getmouse();
+        }
+        flushmouse(); //清空鼠标输入队列
 
-    //    //获取鼠标消息，此函数不会等待，运行后会立即返回
-    //    while (mousemsg()) {
-    //        msg = getmouse();
-    //    }
-    //    flushmouse(); //清空鼠标输入队列
+        if (!msg.is_down()) continue;
 
-    //    if (!msg.is_down()) continue;
+        x = msg.x;
+        y = msg.y;
 
-    //    x = msg.x;
-    //    y = msg.y;
-
-    //    trap(x, y);
-    //    flushmouse(); //清空鼠标输入队列
-    //}
+        trap(x, y);
+        flushmouse(); //清空鼠标输入队列
+    }
 
     //等待用户按键
     getch();
