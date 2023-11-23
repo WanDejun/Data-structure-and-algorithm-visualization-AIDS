@@ -30,7 +30,7 @@ void stack_by_link_init() {
 		stack_by_link_rect_set[i].rt.y_size = stack_by_link_bk_px;
 		stack_by_link_rect_set[i].rt.color = EGEARGB(255, 86, 156, 186);
 
-		strcpy(stack_by_link_rect_set[i].txt.font_name, "Hack");
+		strcpy(stack_by_link_rect_set[i].txt.font_name, FONT);
 		stack_by_link_rect_set[i].txt.font_size = 20;
 		stack_by_link_rect_set[i].txt.x = x + text_det_x;
 		stack_by_link_rect_set[i].txt.y = y + text_det_y; //两位数字要在创建节点时后移，以保证居中
@@ -60,7 +60,7 @@ void stack_by_link_init() {
 	top_text.aw.y_st = top_text.aw.y_ed - 30;
 
 	top_text.txt.color = BLACK;
-	strcpy(top_text.txt.font_name, "Hack");
+	strcpy(top_text.txt.font_name, FONT);
 	top_text.txt.font_size = 30;
 	strcpy(top_text.txt.str, "top");
 	top_text.txt.x = top_text.aw.x_st - 25;
@@ -237,7 +237,7 @@ void stack_by_link_UI() {
 		key[i].rt.y_size = 80;
 
 		key[i].txt.color = EGEARGB(0xff, 0x00, 0x00, 0x00);
-		strcpy(key[i].txt.font_name, "Hack");
+		strcpy(key[i].txt.font_name, FONT);
 		key[i].txt.font_size = 35;
 		key[i].txt.x = key[i].rt.x + 32;
 		key[i].txt.y = key[i].rt.y + 24;
@@ -259,7 +259,7 @@ void stack_by_link_UI() {
 	strcpy(quit.txt.str, "QUIT");
 	quit.txt.color = EGEARGB(255, 0x200, 0x200, 0x200);
 	quit.txt.font_size = 22;
-	strcpy(quit.txt.font_name, "Hack");
+	strcpy(quit.txt.font_name, FONT);
 	quit.txt.x = 1180 + 13;
 	quit.txt.y = 20 + 18;
 

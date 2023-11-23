@@ -24,7 +24,7 @@ void input_box_init() {
 		rect_set[i].rt.y_size = 50;
 		rect_set[i].rt.color = EGEARGB(255, 230, 217, 226);
 		rect_set[i].txt.color = EGEARGB(255, 0x00, 0x00, 0x00);
-		strcpy(rect_set[i].txt.font_name, "Hack");
+		strcpy(rect_set[i].txt.font_name, FONT);
 		rect_set[i].txt.font_size = 20;
 		rect_set[i].txt.x = 50 + 60 * (i % 3) + 18;
 		rect_set[i].txt.y = 460 + 60 * static_cast<int>(i / 3) + 16;
@@ -57,7 +57,7 @@ void input_box_init() {
 	//input_num≥ı ºªØ
 	for (int i = 0; i < 2; i++) {
 		input_num[i].color = EGEARGB(255, 200, 200, 200);
-		strcpy(input_num[i].font_name, "Hack");
+		strcpy(input_num[i].font_name, FONT);
 		input_num[i].font_size = 40;
 	}
 	strcpy(input_num[0].str, "0");
@@ -71,7 +71,7 @@ void input_box_init() {
 	strcpy(quit.txt.str, "QUIT");
 	quit.txt.color = EGEARGB(255, 0x200, 0x200, 0x200);
 	quit.txt.font_size = 22;
-	strcpy(quit.txt.font_name, "Hack");
+	strcpy(quit.txt.font_name, FONT);
 	quit.txt.x = 1180 + 13;
 	quit.txt.y = 20 + 18;
 
@@ -85,7 +85,7 @@ void input_box_init() {
 	strcpy(rd.txt.str, "RAND");
 	rd.txt.color = EGEARGB(255, 0x00, 0x220, 0x155);
 	rd.txt.font_size = 18;
-	strcpy(rd.txt.font_name, "Hack");
+	strcpy(rd.txt.font_name, FONT);
 	rd.txt.x = 230 + 5;
 	rd.txt.y = 460 + 20;
 

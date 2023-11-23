@@ -6,6 +6,7 @@
 #include "draw_arrow.h"
 #include "textout.h"
 #include "input_box.h"
+#include "typedef.h"
 /*
 7个有效节点，2个哨兵节点，共9个
 x方向
@@ -50,15 +51,15 @@ void link_init() {
 
 	for (int x = 215, y = 335, i = 0; i < LINK_MAX_SIZE + 2; i++, x += 100) { link_x[i] = x; link_y[i] = y; } //初始化坐标序列
 
-	text_update(2, "", 100, 100, EGEARGB(255, 0x00, 0x00, 0x00), 30, "Hack");
+	text_update(2, "", 100, 100, EGEARGB(255, 0x00, 0x00, 0x00), 30, FONT);
 
 	text_init();
 
 	//test_set [0]用于存pre， [1]用于存nxt
-	text_update(0, "pre", link_x[0] + 15, link_y[0] + LINK_PX + 15, EGEARGB(255, 0x00, 0x00, 0x00), 20, "Hack"); 
-	text_update(1, "nxt", link_x[1] + 15, link_y[1] + LINK_PX + 30, EGEARGB(255, 0x00, 0x00, 0x00), 20, "Hack");
+	text_update(0, "pre", link_x[0] + 15, link_y[0] + LINK_PX + 15, EGEARGB(255, 0x00, 0x00, 0x00), 20, FONT); 
+	text_update(1, "nxt", link_x[1] + 15, link_y[1] + LINK_PX + 30, EGEARGB(255, 0x00, 0x00, 0x00), 20, FONT);
 
-	text_update(2, "", 100, 100, EGEARGB(255, 0x00, 0x00, 0x00), 30, "Hack");
+	text_update(2, "", 100, 100, EGEARGB(255, 0x00, 0x00, 0x00), 30, FONT);
 	text_cnt = 3;
 
 	head = (link_node*)malloc(sizeof(link_node)); //初始化链表
@@ -96,7 +97,7 @@ void link_draw() { //按照link_arr_rect和arrow_set绘制图形
 	cleardevice();
 	setfillcolor(EGEARGB(255, 0x66, 0xcc, 0xff));
 	setcolor(EGEARGB(0xff, 0x00, 0x00, 0x00));
-	setfont(20, 0, "Hack");
+	setfont(20, 0, FONT);
 
 	for (i = 0; i < link_node_size; i++) { //输出方格
 		if (link_arr_rect[i].x == 0) continue; //不输出未初始化的方格
@@ -223,7 +224,7 @@ void link_insert_input_draw() {
 
 	text txt;
 	txt.color = BLACK;
-	strcpy(txt.font_name, "Hack");
+	strcpy(txt.font_name, FONT);
 	txt.font_size = 15;
 	strcpy(txt.str, "input the insert value:");
 	txt.x = 50; 
@@ -302,8 +303,8 @@ void link_insert_main() {
 	link_draw();
 	Sleep(500);
 
-	text_update(0, "pre", link_x[0] + 15, link_y[0] + LINK_PX + 15, EGEARGB(255, 0x00, 0x00, 0x00), 20, "Hack");
-	text_update(1, "nxt", link_x[1] + 15, link_y[1] + LINK_PX + 30, EGEARGB(255, 0x00, 0x00, 0x00), 20, "Hack");
+	text_update(0, "pre", link_x[0] + 15, link_y[0] + LINK_PX + 15, EGEARGB(255, 0x00, 0x00, 0x00), 20, FONT);
+	text_update(1, "nxt", link_x[1] + 15, link_y[1] + LINK_PX + 30, EGEARGB(255, 0x00, 0x00, 0x00), 20, FONT);
 
 	if (link_node_size < LINK_MAX_SIZE + 2 && !link_quit_flag) {
 		link_insert();
@@ -404,7 +405,7 @@ void link_delete_input_draw() {
 
 	text txt;
 	txt.color = BLACK;
-	strcpy(txt.font_name, "Hack");
+	strcpy(txt.font_name, FONT);
 	txt.font_size = 15;
 	strcpy(txt.str, "input the delete value:");
 	txt.x = 50;

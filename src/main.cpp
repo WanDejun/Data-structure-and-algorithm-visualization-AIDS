@@ -39,7 +39,7 @@ void init() {
             key[i][j].rt.color = EGEARGB(128, 100, 100, 100);
 
             key[i][j].txt.color = BLACK;
-            strcpy(key[i][j].txt.font_name, "Hack");
+            strcpy(key[i][j].txt.font_name, FONT);
             key[i][j].txt.font_size = 18;
             key[i][j].txt.x = key[i][j].rt.x + 5;
             key[i][j].txt.y = key[i][j].rt.y + 12;

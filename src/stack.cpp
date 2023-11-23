@@ -32,7 +32,7 @@ void stack_init() { // (700 - 900) * (240 - 660) 最大共7（stack_max_size）个bloc
 	top = 0;
 
 	top_txt.color = BLACK;
-	strcpy(top_txt.font_name, "Hack");
+	strcpy(top_txt.font_name, FONT);
 	top_txt.font_size = 30;
 	strcpy(top_txt.str, "top ->");
 	top_txt.x = 580;
@@ -59,7 +59,7 @@ void stack_init() { // (700 - 900) * (240 - 660) 最大共7（stack_max_size）个bloc
 	stack_back_ground[2].y_size = 8;
 
 	bottom.color = BLACK;
-	strcpy(bottom.font_name, "Hack");
+	strcpy(bottom.font_name, FONT);
 	bottom.font_size = 30;
 	strcpy(bottom.str, "Bottom");
 	bottom.x = 750;
@@ -73,7 +73,7 @@ void stack_init() { // (700 - 900) * (240 - 660) 最大共7（stack_max_size）个bloc
 		stack_rect_set[i].rt.y = 600 - i * bk_y_size;
 		stack_rect_set[i].rt.y_size = bk_y_size;
 
-		strcpy(stack_rect_set[i].txt.font_name,"Hack");
+		strcpy(stack_rect_set[i].txt.font_name,FONT);
 		stack_rect_set[i].txt.font_size = 30;
 		stack_rect_set[i].txt.x = 790;
 		stack_rect_set[i].txt.y = 600 - i * bk_y_size + text_det_y; // 差20
@@ -260,7 +260,7 @@ void stack_UI() { // 不清屏， 覆盖打印 x:(300-450)px y:(400-480, 500-580, 600-68
 		key[i].rt.y_size = 80;
 
 		key[i].txt.color = EGEARGB(0xff, 0x00, 0x00, 0x00);
-		strcpy(key[i].txt.font_name, "Hack");
+		strcpy(key[i].txt.font_name, FONT);
 		key[i].txt.font_size = 35;
 		key[i].txt.x = key[i].rt.x + 32;
 		key[i].txt.y = key[i].rt.y + 24;
@@ -282,7 +282,7 @@ void stack_UI() { // 不清屏， 覆盖打印 x:(300-450)px y:(400-480, 500-580, 600-68
 	strcpy(quit.txt.str, "QUIT");
 	quit.txt.color = EGEARGB(255, 0x200, 0x200, 0x200);
 	quit.txt.font_size = 22;
-	strcpy(quit.txt.font_name, "Hack");
+	strcpy(quit.txt.font_name, FONT);
 	quit.txt.x = 1180 + 13;
 	quit.txt.y = 20 + 18;
 

@@ -19,7 +19,7 @@ void link_UI() { // 不清屏， 覆盖打印 x:(300-450)px y:(400-480, 500-580, 600-680
 		key[i].rt.y_size = 80;
 
 		key[i].txt.color = EGEARGB(0xff, 0x00, 0x00, 0x00);
-		strcpy(key[i].txt.font_name, "Hack");
+		strcpy(key[i].txt.font_name, FONT);
 		key[i].txt.font_size = 35;
 		key[i].txt.x = key[i].rt.x + 16;
 		key[i].txt.y = key[i].rt.y + 24;
@@ -39,7 +39,7 @@ void link_UI() { // 不清屏， 覆盖打印 x:(300-450)px y:(400-480, 500-580, 600-680
 	strcpy(quit.txt.str, "QUIT");
 	quit.txt.color = EGEARGB(255, 0x200, 0x200, 0x200);
 	quit.txt.font_size = 22;
-	strcpy(quit.txt.font_name, "Hack");
+	strcpy(quit.txt.font_name, FONT);
 	quit.txt.x = 1180 + 13;
 	quit.txt.y = 20 + 18;
 

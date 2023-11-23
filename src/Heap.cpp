@@ -218,6 +218,7 @@ static void heap_push() {
 		draw_error();
 		return;
 	}
+	heap_draw();
 
 	int val = input_box_get();
 
@@ -365,6 +366,8 @@ static void heap_pop() { //弹出节点
 		return;
 	}
 
+	heap_draw();
+
 	heap_swap_disappear(); //头尾节点交换，尾节点消失
 
 	if (heap_size == 4) shrink(); //层数减少，树收缩
@@ -388,7 +391,7 @@ void heap_UI() {
 		key[i].rt.y_size = 80;
 
 		key[i].txt.color = EGEARGB(0xff, 0x00, 0x00, 0x00);
-		strcpy(key[i].txt.font_name, "Hack");
+		strcpy(key[i].txt.font_name, FONT);
 		key[i].txt.font_size = 35;
 		key[i].txt.x = key[i].rt.x + 32;
 		key[i].txt.y = key[i].rt.y + 24;
@@ -412,7 +415,7 @@ void heap_UI() {
 	strcpy(quit.txt.str, "QUIT");
 	quit.txt.color = EGEARGB(255, 0x200, 0x200, 0x200);
 	quit.txt.font_size = 22;
-	strcpy(quit.txt.font_name, "Hack");
+	strcpy(quit.txt.font_name, FONT);
 	quit.txt.x = 1180 + 13;
 	quit.txt.y = 20 + 18;
 

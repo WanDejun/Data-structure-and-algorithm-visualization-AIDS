@@ -40,7 +40,7 @@ void queue_by_link_init() { //初始化
 		//节点文本初始化
 		queue_by_link_node_set[i].txt.color = BLACK;
 		queue_by_link_node_set[i].txt.font_size = 20;
-		strcpy(queue_by_link_node_set[i].txt.font_name, "Hack");
+		strcpy(queue_by_link_node_set[i].txt.font_name, FONT);
 		queue_by_link_node_set[i].txt.x = x + text_det_x;
 		queue_by_link_node_set[i].txt.y = y + text_det_y;
 
@@ -58,7 +58,7 @@ void queue_by_link_init() { //初始化
 	null_node.txt.color = EGERGB(200, 200, 200);
 	strcpy(null_node.txt.str, "NULL");
 	null_node.txt.font_size = 20;
-	strcpy(null_node.txt.font_name, "Hack");
+	strcpy(null_node.txt.font_name, FONT);
 	null_node.txt.x = queue_by_link_node_set[0].rt.x + text_det_x - 14;
 	null_node.txt.y = queue_by_link_node_set[0].rt.y + text_det_y;
 
@@ -81,7 +81,7 @@ void queue_by_link_init() { //初始化
 	queue_by_link_head_p.visible = 1;
 
 	queue_by_link_head_p.txt.color = BLACK;
-	strcpy(queue_by_link_head_p.txt.font_name, "Hack");
+	strcpy(queue_by_link_head_p.txt.font_name, FONT);
 	queue_by_link_head_p.txt.font_size = 30;
 	strcpy(queue_by_link_head_p.txt.str, "Head");
 	queue_by_link_head_p.txt.x = queue_by_link_head_p.aw.x_st - 35;
@@ -95,7 +95,7 @@ void queue_by_link_init() { //初始化
 	queue_by_link_tail_p.visible = 1;
 
 	queue_by_link_tail_p.txt.color = BLACK;
-	strcpy(queue_by_link_tail_p.txt.font_name, "Hack");
+	strcpy(queue_by_link_tail_p.txt.font_name, FONT);
 	queue_by_link_tail_p.txt.font_size = 30;
 	strcpy(queue_by_link_tail_p.txt.str, "Tail");
 	queue_by_link_tail_p.txt.x = queue_by_link_tail_p.aw.x_st - 35;
@@ -103,7 +103,7 @@ void queue_by_link_init() { //初始化
 
 	//info初始化
 	queue_by_link_info.color = BLACK;
-	strcpy(queue_by_link_info.font_name, "Hack");
+	strcpy(queue_by_link_info.font_name, FONT);
 	queue_by_link_info.font_size = 30;
 	queue_by_link_info.x = 80;
 	queue_by_link_info.y = 80;
@@ -357,7 +357,7 @@ void queue_by_link_UI() {
 		key[i].rt.y_size = 80;
 
 		key[i].txt.color = EGEARGB(0xff, 0x00, 0x00, 0x00);
-		strcpy(key[i].txt.font_name, "Hack");
+		strcpy(key[i].txt.font_name, FONT);
 		key[i].txt.font_size = 35; //35号字体
 		key[i].txt.x = key[i].rt.x + 32;
 		key[i].txt.y = key[i].rt.y + 24;
@@ -381,7 +381,7 @@ void queue_by_link_UI() {
 	strcpy(quit.txt.str, "QUIT");
 	quit.txt.color = EGEARGB(255, 0x200, 0x200, 0x200);
 	quit.txt.font_size = 22;
-	strcpy(quit.txt.font_name, "Hack");
+	strcpy(quit.txt.font_name, FONT);
 	quit.txt.x = 1180 + 13;
 	quit.txt.y = 20 + 18;
 
