@@ -111,7 +111,7 @@ static void appear() {
 			draw_arrow(tree_arrow_set[size]);
 		}
 	}
-	tree_arrow_set[size].visible = 1;
+	if (size != 1) tree_arrow_set[size].visible = 1;
 }
 
 static void push_down(int loc) {
