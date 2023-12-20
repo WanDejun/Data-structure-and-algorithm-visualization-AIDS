@@ -1,4 +1,4 @@
-# 数据结构与算法可视化辅助程序(Data structure and algorithm visualization AIDS) #
+# 数据结构与算法可视化辅助程序(Data structure and algorithm visualization program) #
 
 ### （本项目只采用了c++中的bool类型，函数重载两个特性，未采用面向对象思想编写。是一个c风格的cpp程序？）
 - ps.截至2023.11.18 0:20 该项目已有1548行代码

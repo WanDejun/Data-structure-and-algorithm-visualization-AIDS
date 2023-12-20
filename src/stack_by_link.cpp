@@ -15,12 +15,13 @@ arrow stack_by_link_arrow_set[stack_by_link_max_size];
 
 arrow_with_text top_text;
 
-int stack_by_link_top = 0;
+int stack_by_link_top;
 
 bool stack_by_link_quit_flag;
 
 void stack_by_link_init() { 
 	stack_by_link_quit_flag = 0;
+	stack_by_link_top = 0;
 
 	for (int x = 350, y = 335, i = 0; i < stack_by_link_max_size + 1; i++, x += stack_by_link_bk_px * 2) {
 		//³õÊ¼»¯rect
