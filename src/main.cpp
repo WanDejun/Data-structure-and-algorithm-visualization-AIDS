@@ -12,6 +12,7 @@
 #include "heap.h"
 #include "tree.h"
 #include "tree_demo.h"
+#include "sort.h"
 
 rect_with_text key[4][4] = { 0 }; //按键（功能）个数
 
@@ -45,17 +46,17 @@ void init() {
             key[i][j].txt.y = key[i][j].rt.y + 12;
         }
     }
-    strcpy(key[0][0].txt.str, "");
+    strcpy(key[0][0].txt.str, "Bubble sort");
     strcpy(key[0][1].txt.str, "");
     strcpy(key[0][2].txt.str, "Link: \nInsert & Delete");
     strcpy(key[0][3].txt.str, "Stack: \nArray Inplamentation");
 
-    strcpy(key[1][0].txt.str, "");
+    strcpy(key[1][0].txt.str, "Insert sort");
     strcpy(key[1][1].txt.str, "");
     strcpy(key[1][2].txt.str, "Heap: \n(priority queue)");
     strcpy(key[1][3].txt.str, "Stack: \nList Inplamentation");
 
-    strcpy(key[2][0].txt.str, "");
+    strcpy(key[2][0].txt.str, "Select sort");
     strcpy(key[2][1].txt.str, "");
     strcpy(key[2][2].txt.str, "Tree: \ntraversal");
     strcpy(key[2][3].txt.str, "Queue(cycle): \nArray Inplamentation");
@@ -89,13 +90,13 @@ void main_UI() { //简易版UI
 void trap(int x, int y) {
     if (x > 150 && x < 350) {
         if (y > 320 && y < 380) {
-            
+            BubbleSort();
         }
         else if (y > 410 && y < 470) {
-            
+            InsertSort();
         }
         else if (y > 500 && y < 560) {
-            
+            SelectSort();
         }
         else if (y > 590 && y < 650) {
             

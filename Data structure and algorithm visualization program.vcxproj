@@ -132,6 +132,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\queue_by_link.cpp" />
     <ClCompile Include="src\random_color.cpp" />
+    <ClCompile Include="src\sort.cpp" />
     <ClCompile Include="src\stack.cpp" />
     <ClCompile Include="src\stack_by_link.cpp" />
     <ClCompile Include="src\textout.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="src\link_insert_delete.h" />
     <ClInclude Include="src\queue_by_link.h" />
     <ClInclude Include="src\random_color.h" />
+    <ClInclude Include="src\sort.h" />
     <ClInclude Include="src\stack.h" />
     <ClInclude Include="src\stack_by_link.h" />
     <ClInclude Include="src\textout.h" />
