@@ -27,31 +27,31 @@ static void initsquire()//初始矩形
 	squire[7].zhi = 10;
 	squire[8].zhi = 3;
 	squire[9].zhi = 12;
-	squire[0].x1 = 200;
-	squire[1].x1=224;
-	squire[2].x1=248;
-	squire[3].x1=272;
-	squire[4].x1=296;
-	squire[5].x1=320;
-	squire[6].x1=342;
-	squire[7].x1=366;
-	squire[8].x1=390;
-	squire[9].x1=414;
-	squire[0].x2=224;
-	squire[1].x2=248;
-	squire[2].x2=272;
-    squire[3].x2=296;
-	squire[4].x2=320;
-	squire[5].x2=342;
-	squire[6].x2=366;
-	squire[7].x2=390;
-	squire[8].x2=414;
-	squire[9].x2=438;
+	squire[0].x1 = 350;
+	squire[1].x1=400;
+	squire[2].x1=450;
+	squire[3].x1=500;
+	squire[4].x1=550;
+	squire[5].x1=600;
+	squire[6].x1 = 650;
+	squire[7].x1=700;
+	squire[8].x1=750;
+	squire[9].x1=800;
+	squire[0].x2=400;
+	squire[1].x2=450;
+	squire[2].x2=500;
+    squire[3].x2=550;
+	squire[4].x2=600;
+	squire[5].x2=650;
+	squire[6].x2=700;
+	squire[7].x2=750;
+	squire[8].x2=800;
+	squire[9].x2=850;
 	for (int i = 0; i < 10; i++)
 	{
 		
-		squire[i].y1 = 280;
-		squire[i].y2 = 280-squire[i].zhi * 10;
+		squire[i].y1 = 400;
+		squire[i].y2 = 400-squire[i].zhi * 10;
 	}
 }
 static void drawsquire()
@@ -65,16 +65,16 @@ static void drawsquire()
 	}
 	setfont(15, 0, "幼圆");
 	//(字体高度,字体宽度(为0即为自适应),字形)设置字体为25,幼圆字体
-	outtextxy(squire[0].x1, 290, "09");
-	outtextxy(squire[1].x1, 290, "20");
-	outtextxy(squire[2].x1, 290, "01");
-	outtextxy(squire[3].x1, 290, "14");
-	outtextxy(squire[4].x1, 290, "18");
-	outtextxy(squire[5].x1, 290, "05");
-	outtextxy(squire[6].x1, 290, "25");
-	outtextxy(squire[7].x1, 290, "10");
-	outtextxy(squire[8].x1, 290, "03");
-	outtextxy(squire[9].x1, 290, "12");
+	outtextxy(squire[0].x1, 410, "09");
+	outtextxy(squire[1].x1, 410, "20");
+	outtextxy(squire[2].x1, 410, "01");
+	outtextxy(squire[3].x1, 410, "14");
+	outtextxy(squire[4].x1, 410, "18");
+	outtextxy(squire[5].x1, 410, "05");
+	outtextxy(squire[6].x1, 410, "25");
+	outtextxy(squire[7].x1, 410, "10");
+	outtextxy(squire[8].x1, 410, "03");
+	outtextxy(squire[9].x1, 410, "12");
 }
  void InsertSort()
 {
@@ -91,7 +91,7 @@ static void drawsquire()
 	for (int i = 1; i < 10; i++)
 	{
 		int flag =squire[i].zhi;   //记录arr[i] 的值
-		for (int j = i - 1; j >= 0 && squire[j].zhi > flag; j-- , delay_fps(1))  //当arr[i]前面的一个数字比a[i]大时
+		for (int j = i - 1; j >= 0 && squire[j].zhi > flag; j-- , delay_fps(2))  //当arr[i]前面的一个数字比a[i]大时
 		{ 
 			squire[j+1].zhi = squire[j].zhi;  //将arr[i] 和其前一个数字进行交换
 			squire[j].zhi = flag;
@@ -137,7 +137,7 @@ void BubbleSort()
 	for (i = 0; i < 9; i++)//size-1是因为不用与自己比较，所以比的数就少一个
 	{
 		int count = 0;
-		for (j = 0; j <9 - i; j++, delay_fps(1))	//size-1-i是因为每一趟就会少一个数比较
+		for (j = 0; j <9 - i; j++, delay_fps(2))	//size-1-i是因为每一趟就会少一个数比较
 		{
 			if (squire[j].zhi > squire[j + 1].zhi)//这是升序排法，前一个数和后一个数比较，如果前数大则与后一个数换位置
 			{
